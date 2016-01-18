@@ -1,17 +1,17 @@
-package io.vithor.yamvpframework;
+package io.vithor.yamvpframework
 
-import android.app.Application;
-import android.content.Context;
+import android.app.Application
 
-import com.mounacheikhna.decor.DecorContextWrapper;
-import com.mounacheikhna.decor.Decorator;
-import com.mounacheikhna.decorators.Decorators;
+import de.halfbit.tinybus.TinyBus
+
 
 /**
  * Created by Hazer on 12/31/15.
  */
-public class BaseApplication extends Application {
+public open class BaseApplication : Application() {
+    private var mBus: TinyBus? = null
 
+    /*
     protected Decorator[] contextDecorators() {
         return Decorators.getAll();
     }
@@ -25,5 +25,12 @@ public class BaseApplication extends Application {
         } else {
             super.attachBaseContext(newBase);
         }
+    }
+    */
+
+    override fun onCreate() {
+        super.onCreate()
+        mBus = TinyBus.from(this)
+        mBus!!.register(this)
     }
 }

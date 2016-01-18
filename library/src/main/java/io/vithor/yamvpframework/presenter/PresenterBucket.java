@@ -20,7 +20,7 @@ final class PresenterBucket {
      * @param presenter Presenter to persist in memory.
      */
     public static void add(BasePresenter presenter) {
-        Logger.d("Class: " + presenter.getClass().getSimpleName() + " - " + presenter.getClass().hashCode());
+//        Logger.d("Class: " + presenter.getClass().getSimpleName() + " - " + presenter.getClass().hashCode());
         bucket.put(presenter.getClass().hashCode(), presenter);
     }
 
@@ -29,7 +29,7 @@ final class PresenterBucket {
     }
 
     public static void release(Class<? extends BasePresenter> presenterClass) {
-        Logger.d("Class: " + presenterClass.getSimpleName() + " - " + presenterClass.hashCode());
+//        Logger.d("Class: " + presenterClass.getSimpleName() + " - " + presenterClass.hashCode());
         bucket.remove(presenterClass.hashCode());
     }
 

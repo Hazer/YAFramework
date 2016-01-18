@@ -11,16 +11,15 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 
-import java.lang.ref.WeakReference;
-
 import butterknife.ButterKnife;
+import de.halfbit.tinybus.TinyBus;
 import icepick.Icepick;
 
 /**
  * Created by Hazer on 12/22/15.
  */
 public abstract class BaseFragment extends Fragment {
-
+    private TinyBus mBus;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +27,7 @@ public abstract class BaseFragment extends Fragment {
 //        Akatsuki.restore(this, savedInstanceState);
         FragmentArgs.inject(this);
         Icepick.restoreInstanceState(this, savedInstanceState);
+        mBus = TinyBus.from(getContext().getApplicationContext());
     }
 
     @Override
@@ -46,11 +46,27 @@ public abstract class BaseFragment extends Fragment {
         return rootView;
     }
 
-    protected abstract @LayoutRes int getLayoutID();
+    protected abstract
+    @LayoutRes
+    int getLayoutID();
 
     @CallSuper
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        mBus.unregister(this);
+        super.onStop();
     }
 }

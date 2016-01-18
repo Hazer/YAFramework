@@ -103,7 +103,7 @@ public abstract class BasePresenter<SK extends Sketch> implements Presenter  {
         return PresenterBucket.getRetainedInstance(type);
     }
 
-    protected abstract class PresenterCallback<T, RT> implements RepositoryCallback<T, RT, Exception> {
+    public abstract class PresenterCallback<T, RT> implements RepositoryCallback<T, RT, Exception> {
         private final PresenterAction action;
 
         public PresenterCallback(PresenterAction action) {

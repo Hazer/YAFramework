@@ -15,6 +15,7 @@ import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 
 import icepick.Icepick;
+import okio.BufferedSink;
 
 @FragmentWithArgs
 public class ProgressDialogFragment extends DialogFragment {
@@ -71,7 +72,6 @@ public class ProgressDialogFragment extends DialogFragment {
         if(frag != null){
             tr.remove(frag);
         }
-        tr.commit();
+        tr.commitAllowingStateLoss();
     }
-
 }

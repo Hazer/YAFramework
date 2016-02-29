@@ -60,7 +60,7 @@ public abstract class PresentableFragment<P extends BasePresenter> extends BaseF
     public void onDestroy() {
         super.onDestroy();
         if (getPresenter() != null) {
-            getPresenter().release();
+            getPresenter().onDestroy();
         }
     }
 

@@ -1,0 +1,97 @@
+package io.vithor.yamvpframework
+
+import android.app.Activity
+import android.content.Context
+import android.os.Bundle
+import android.support.annotation.CallSuper
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import butterknife.ButterKnife
+import com.afollestad.assent.Assent
+import com.afollestad.assent.AssentCallback
+import com.orhanobut.logger.Logger
+import de.halfbit.tinybus.TinyBus
+import icepick.Icepick
+
+/**
+ * Created by Hazer on 12/22/15.
+ */
+abstract class BaseFragment : Fragment() {
+    private val mBus: TinyBus by lazy { TinyBus.from(context.applicationContext) }
+
+    protected val safeContext: Context?
+        get() {
+            var ctx = context as? Activity
+            return if (ctx?.isFinishing == false) ctx else null
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //        Akatsuki.restore(this, savedInstanceState);
+//        Icepick.restoreInstanceState(this, savedInstanceState)
+//        Icepick.restoreInstanceState<BaseFragment>(this, savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+//        Icepick.saveInstanceState(this, outState)
+        //        Akatsuki.save(this, outState);
+        //        Icepick.saveInstanceState<BaseFragment>(this, outState)
+    }
+
+    protected abstract val layoutID: Int
+
+    open fun onFragmentVisible() {
+
+    }
+
+    @CallSuper
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val rootView = inflater!!.inflate(layoutID, container, false)
+        ButterKnife.bind(this, rootView)
+        return rootView
+    }
+
+    @CallSuper
+    override fun onDestroyView() {
+        super.onDestroyView()
+        ButterKnife.unbind(this)
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser) {
+            onFragmentVisible()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mBus.register(this)
+    }
+
+    override fun onStop() {
+        mBus.unregister(this)
+        super.onStop()
+    }
+
+    final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
+        if (activity is PermissionDelegate) {
+            if (Assent.isPermissionGranted(permission)) {
+                granted()
+            } else {
+                Assent.requestPermissions(AssentCallback {
+                    if (it.allPermissionsGranted()) {
+                        granted()
+                    } else {
+                        notGranted()
+                    }
+                }, permission.hashCode(), permission)
+            }
+        } else {
+            Logger.e("Permission error")
+        }
+    }
+}

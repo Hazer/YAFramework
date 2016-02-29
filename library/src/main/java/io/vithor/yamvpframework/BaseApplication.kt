@@ -1,15 +1,14 @@
 package io.vithor.yamvpframework
 
-import android.app.Application
-
+import android.support.multidex.MultiDexApplication
 import de.halfbit.tinybus.TinyBus
 
 
 /**
  * Created by Hazer on 12/31/15.
  */
-public open class BaseApplication : Application() {
-    private var mBus: TinyBus? = null
+open class BaseApplication : MultiDexApplication() {
+    val bus: TinyBus by lazy { TinyBus.from(this) }
 
     /*
     protected Decorator[] contextDecorators() {
@@ -30,7 +29,6 @@ public open class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        mBus = TinyBus.from(this)
-        mBus!!.register(this)
+        bus.register(this)
     }
 }

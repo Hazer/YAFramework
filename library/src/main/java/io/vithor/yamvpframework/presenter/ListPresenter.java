@@ -1,6 +1,10 @@
 package io.vithor.yamvpframework.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.orhanobut.logger.Logger;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.vithor.yamvpframework.ErrorContainer;
 import io.vithor.yamvpframework.ResponseContainer;
@@ -17,10 +21,10 @@ public abstract class ListPresenter<SK extends ListSketch<ModelType>, ModelType,
     }
 
     protected final PresenterCallback<ModelType, ResponseType> defaultHandler(PresenterAction action) {
-        return new PresenterCallback<ModelType, ResponseType>(action) {
+        return new PresenterCallback<ModelType, ResponseType>(this, action) {
             @Override
-            public void success(ModelType model, ResponseContainer response, PresenterAction action) throws ViewDetachedException {
-                successHandler(action, model, response);
+            public void success(ModelType modelType, @NotNull ResponseContainer<ResponseType> response, @NotNull PresenterAction action) throws ViewDetachedException {
+                successHandler(action, modelType, response);
             }
         };
     }
@@ -50,7 +54,7 @@ public abstract class ListPresenter<SK extends ListSketch<ModelType>, ModelType,
     }
 
     @Override
-    protected void handleRestFailure(ErrorContainer error, PresenterAction action) throws ViewDetachedException {
+    public void handleRestFailure(@NonNull ErrorContainer error, @NonNull PresenterAction action) throws ViewDetachedException {
         Logger.e(error.getError(), "RestError");
 //        RetrofitError retrofitError = (RetrofitError) error.getError();
 

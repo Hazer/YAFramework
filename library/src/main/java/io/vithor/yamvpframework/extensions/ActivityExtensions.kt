@@ -1,0 +1,27 @@
+package io.vithor.yamvpframework.extensions
+
+import android.app.Activity
+import android.content.Intent
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
+import android.view.View
+import org.jetbrains.anko.intentFor
+
+/**
+ * Created by Hazer on 2/22/16.
+ */
+inline fun <reified T : Activity> Activity.navigate(id: String, sharedView: View? = null,
+                                                    transitionName: String? = null) {
+    var options: ActivityOptionsCompat? = null
+
+    if (sharedView != null && transitionName != null) {
+        options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedView, transitionName)
+    }
+
+    ActivityCompat.startActivity(this, intentFor<T>("id" to id), options?.toBundle())
+}
+
+fun Activity.getNavigationId(): String {
+    val intent = intent
+    return intent.getStringExtra("id")
+}

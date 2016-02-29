@@ -2,6 +2,9 @@ package io.vithor.yamvpframework;
 
 import android.support.annotation.StringDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 public final class InputMasks {
     public static final String RG_MASK = "##.###.###-#";
     public static final String CPF_MASK = "###.###.###-##";
@@ -31,6 +34,7 @@ public final class InputMasks {
             BRAZIL_PHONE_NUMBER_9DIGITS_MASK,
             BRAZIL_REGION_PHONE_NUMBER_MASK,
             BRAZIL_REGION_PHONE_NUMBER_9DIGITS_MASK})
+    @Retention(RetentionPolicy.SOURCE)
     public @interface Mask {
 
     }

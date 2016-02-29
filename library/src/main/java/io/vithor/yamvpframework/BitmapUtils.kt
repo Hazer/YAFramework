@@ -27,7 +27,7 @@ public object BitmapUtils {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, dp, context.resources.displayMetrics)
     }
 
-    @SuppressWarnings("deprecation")
+    @Suppress("deprecation")
     fun loadImage(resourceId: Int, context: Context): Bitmap? {
         val defaultDisplay = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val point = Point()

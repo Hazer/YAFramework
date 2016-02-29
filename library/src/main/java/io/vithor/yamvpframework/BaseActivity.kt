@@ -32,22 +32,22 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
             return if (isFinishing == false) this else null
         }
 
+    private var presenterClass: Class<P>? = null
+
     /**
      * Instantiate a presenter instance
      *
      * @return The [BasePresenter] for this view
      */
     fun createPresenter(): P {
-        val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
-        val name = type.toString().substring(6)
-        val pc = Class.forName(name) as? Class<P>
-        if (pc != null) {
-            var inst = BasePresenter.getActiveInstance(pc.kotlin)
-            inst = inst ?: pc.newInstance()
-            return inst ?: throw IllegalStateException("Class ${name} must have a public no-args constructor.")
-        } else {
-            throw IllegalStateException("Class ${name} does not extends from BasePresenter or the Sketch implemented its not the same from BaseActivity.")
+        if (presenterClass == null) {
+            val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
+            val name = type.toString().substring(6)
+            presenterClass = Class.forName(name) as? Class<P> ?: throw IllegalStateException("Class ${name} does not extends from BasePresenter or the Sketch implemented its not the same from BaseActivity.")
         }
+        var inst = BasePresenter.getActiveInstance(presenterClass?.kotlin)
+        inst = inst ?: presenterClass?.newInstance()
+        return inst ?: throw IllegalStateException("Class ${presenterClass?.simpleName} must have a public no-args constructor.")
     }
     //    protected abstract fun createPresenter(): P
 

@@ -1,45 +1,36 @@
-package io.vithor.yamvpframework
+package io.vithor.yamvpframework.mvp
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.annotation.CallSuper
 import android.support.v7.app.AppCompatActivity
-import butterknife.ButterKnife
 import com.afollestad.assent.Assent
 import com.afollestad.assent.AssentCallback
-import io.vithor.yamvpframework.presenter.BasePresenter
-import io.vithor.yamvpframework.presenter.sketch.Sketch
+import com.orhanobut.logger.Logger
+import io.vithor.yamvpframework.PermissionDelegate
+import io.vithor.yamvpframework.mvp.presenter.BasePresenter
+import io.vithor.yamvpframework.mvp.presenter.Presentable
+import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import io.vithor.yamvpframework.validation.FailedRule
 import java.lang.reflect.ParameterizedType
-import kotlin.reflect.KClass
 
-//inline fun <reified PR: BasePresenter<*>> createPresenter(): PR {
-//    return BasePresenter.getActiveInstance(PR::class.java) ?: PR::class.java.newInstance()
-//}
-
-abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActivity(), Sketch, PermissionDelegate {
+abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActivity(), Presentable<P, SK>, Sketch, PermissionDelegate {
 
     var presenter: P? = null
         private set
 
     protected abstract val layoutID: Int
 
-    protected open var useButterknife: Boolean = true
-
-    protected val safeContext: Context?
-        get() {
-            return if (isFinishing == false) this else null
-        }
+    var savedInstanceStateCalled = false
+        private set
 
     private var presenterClass: Class<P>? = null
-
     /**
      * Instantiate a presenter instance
      *
      * @return The [BasePresenter] for this view
      */
-    fun createPresenter(): P {
+    override final fun createPresenter(): P {
         if (presenterClass == null) {
             val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
             val name = type.toString().substring(6)
@@ -63,19 +54,22 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
         super.onCreate(savedInstanceState)
         setContentView(layoutID)
         Assent.setActivity(this, this)
-        //        Akatsuki.restore(this, savedInstanceState);
-        //        Icepick.restoreInstanceState(this, savedInstanceState);
 
         this.presenter = createPresenter()
 
-        if (useButterknife) {
-            ButterKnife.bind(this)
-        }
         this.presenter!!.beforeAttachView()
+        //            ButterKnife.bind(this)
 
         onViewSetup(savedInstanceState)
 
-        this.presenter!!.attachView(this as SK)
+        val sketchView = this as? SK ?: throw IllegalStateException("${javaClass.simpleName} must implement ${ (presenterClass?.genericSuperclass as? ParameterizedType)?.actualTypeArguments!![0]}")
+        this.presenter!!.attachView(sketchView)
+    }
+
+    @CallSuper
+    override fun onStart() {
+        super.onStart()
+        //                Assent.setActivity(this, this)
     }
 
     @CallSuper
@@ -94,18 +88,13 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
 
     @CallSuper
     override fun onDestroy() {
+        //        Assent.setActivity(this, null)
         presenter?.detachView()
         if (isFinishing) {
             presenter?.onDestroy()
+            presenter = null
         }
         super.onDestroy()
-    }
-
-    @CallSuper
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        //        Icepick.saveInstanceState(this, outState);
-        //        Akatsuki.save(this, outState);
     }
 
     @CallSuper
@@ -128,14 +117,30 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    override final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
+        val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
+        if (permissionsGranted) {
+            granted()
+        } else {
+            Assent.requestPermissions({ result ->
+                if (result?.allPermissionsGranted() == true) {
+                    granted()
+                } else {
+                    notGranted()
+                }
+            }, 220, permissions)
+        }
     }
 
     protected fun showErrors(failedRules: List<FailedRule>) {
         failedRules.forEach {
             it.editText.error = it.rule.getMessage(this@BaseActivity)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        savedInstanceStateCalled = true
+        super.onSaveInstanceState(outState, outPersistentState)
     }
 }
 

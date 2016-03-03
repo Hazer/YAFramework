@@ -7,12 +7,12 @@ import android.widget.EditText
 /**
  * Created by Hazer on 2/16/16.
  */
-class EqualsRule(val field: EditText, message: String? = null, @StringRes messageId: Int? = null) : Rule<CharSequence>(0, message, messageId) {
+class EqualsRule(val anotherField: EditText, message: String? = null, @StringRes messageId: Int? = null) : Rule<CharSequence>(0, message, messageId) {
 
     override fun extractValue(field: EditText): CharSequence = field.text.trim()
 
     override fun isValid(validatable: CharSequence): Boolean {
-        return validatable.equals(field.text.trim())
+        return validatable.toString().compareTo(anotherField.text.trim().toString()) == 0
     }
 
     override fun getMessage(context: Context): String {

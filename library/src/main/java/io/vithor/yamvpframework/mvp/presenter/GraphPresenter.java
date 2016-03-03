@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.presenter;
+package io.vithor.yamvpframework.mvp.presenter;
 
 import android.support.annotation.Nullable;
 

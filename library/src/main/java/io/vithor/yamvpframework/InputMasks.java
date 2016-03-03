@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public final class InputMasks {
-    public static final String RG_MASK = "##.###.###-#";
+    public static final String RG_MASK = "##.###.###-#############";
     public static final String CPF_MASK = "###.###.###-##";
     public static final String CNPJ_MASK = "##.###.###/####-##";
     public static final String CEP_MASK = "##.###-###";

@@ -1,6 +1,4 @@
-package io.vithor.yamvpframework.presenter;
-
-import android.support.annotation.NonNull;
+package io.vithor.yamvpframework.mvp.presenter;
 
 import com.orhanobut.logger.Logger;
 
@@ -8,12 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 import io.vithor.yamvpframework.ErrorContainer;
 import io.vithor.yamvpframework.ResponseContainer;
-import io.vithor.yamvpframework.presenter.sketch.ListSketch;
+import io.vithor.yamvpframework.mvp.presenter.sketch.TypedSketch;
 
 /**
  * Created by hazer on 5/5/15.
  */
-public abstract class ListPresenter<SK extends ListSketch<ModelType>, ModelType, ResponseType> extends BasePresenter<SK> {
+public abstract class SimplePresenter<ModelType, SK extends TypedSketch<ModelType>, ResponseType> extends BasePresenter<SK> {
 
     @Override
     protected void onViewAttached() {
@@ -39,22 +37,13 @@ public abstract class ListPresenter<SK extends ListSketch<ModelType>, ModelType,
         }
     }
 
-    protected void successHandler(PresenterAction action, ModelType model, ResponseContainer rawResponse) throws ViewDetachedException {
-        switch (action) {
-            case PULL_TO_REFRESH:
-                getView().onRefreshCompleted(model);
-                break;
-            case PAGINATE_FORWARD:
-                getView().onMoreDataFetched(model);
-                break;
-            default:
-                getView().showData(model);
-                getView().showContent();
-        }
+    protected void successHandler(PresenterAction action, ModelType t, ResponseContainer rawResponse) throws ViewDetachedException {
+        getView().showData(t);
+        getView().showContent();
     }
 
     @Override
-    public void handleRestFailure(@NonNull ErrorContainer error, @NonNull PresenterAction action) throws ViewDetachedException {
+    public void handleRestFailure(ErrorContainer error, PresenterAction action) throws ViewDetachedException {
         Logger.e(error.getError(), "RestError");
 //        RetrofitError retrofitError = (RetrofitError) error.getError();
 

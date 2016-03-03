@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.presenter
+package io.vithor.yamvpframework.mvp.presenter
 
 import android.content.Context
 import android.support.annotation.CallSuper
@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference
 import io.vithor.yamvpframework.ErrorContainer
 import io.vithor.yamvpframework.RepositoryCallback
 import io.vithor.yamvpframework.ResponseContainer
-import io.vithor.yamvpframework.presenter.sketch.Sketch
+import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import kotlin.reflect.KClass
 
 /**
@@ -27,7 +27,8 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
         @Throws(ViewDetachedException::class)
         get() {
             if (!isViewAttached) {
-                throw ViewDetachedException()
+//                throw ViewDetachedException()
+                return null
             }
             return viewWeak?.get()
         }

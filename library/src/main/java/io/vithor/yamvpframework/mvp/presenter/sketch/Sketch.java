@@ -1,8 +1,8 @@
-package io.vithor.yamvpframework.presenter.sketch;
+package io.vithor.yamvpframework.mvp.presenter.sketch;
 
 import android.support.annotation.MainThread;
 
-import io.vithor.yamvpframework.presenter.PresenterAction;
+import io.vithor.yamvpframework.mvp.presenter.PresenterAction;
 
 /**
  * Created by Hazer on 1/8/16.

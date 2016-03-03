@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.presenter;
+package io.vithor.yamvpframework.mvp.presenter;
 
 /**
  * Created by Hazer on 1/8/16.

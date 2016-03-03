@@ -1,19 +1,19 @@
 package io.vithor.yamvpframework
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
+import com.afollestad.assent.AfterPermissionResult
+//import butterknife.ButterKnife
 import com.afollestad.assent.Assent
 import com.afollestad.assent.AssentCallback
+import com.afollestad.assent.PermissionResultSet
 import com.orhanobut.logger.Logger
 import de.halfbit.tinybus.TinyBus
-import icepick.Icepick
+import io.vithor.yamvpframework.PermissionDelegate
 
 /**
  * Created by Hazer on 12/22/15.
@@ -21,17 +21,9 @@ import icepick.Icepick
 abstract class BaseFragment : Fragment() {
     private val mBus: TinyBus by lazy { TinyBus.from(context.applicationContext) }
 
-    protected val safeContext: Context?
-        get() {
-            var ctx = context as? Activity
-            return if (ctx?.isFinishing == false) ctx else null
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //        Akatsuki.restore(this, savedInstanceState);
-//        Icepick.restoreInstanceState(this, savedInstanceState)
-//        Icepick.restoreInstanceState<BaseFragment>(this, savedInstanceState)
+//        Assent.setFragment(this, this)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -40,6 +32,11 @@ abstract class BaseFragment : Fragment() {
         //        Akatsuki.save(this, outState);
         //        Icepick.saveInstanceState<BaseFragment>(this, outState)
     }
+
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        Assent.handleResult(permissions, grantResults)
+//    }
 
     protected abstract val layoutID: Int
 
@@ -50,14 +47,14 @@ abstract class BaseFragment : Fragment() {
     @CallSuper
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(layoutID, container, false)
-        ButterKnife.bind(this, rootView)
+//        ButterKnife.bind(this, rootView)
         return rootView
     }
 
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
-        ButterKnife.unbind(this)
+//        ButterKnife.unbind(this)
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -93,5 +90,35 @@ abstract class BaseFragment : Fragment() {
         } else {
             Logger.e("Permission error")
         }
+    }
+
+    final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
+        if (activity is PermissionDelegate) {
+            val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
+            if (permissionsGranted) {
+                granted()
+            } else {
+                Assent.requestPermissions({ result ->
+                    if (result?.allPermissionsGranted() == true) {
+                        granted()
+                    } else {
+                        notGranted()
+                    }
+                }, 234, permissions)
+            }
+        } else {
+            Logger.e("Permission error")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        Assent.setFragment(this, this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+//        if (activity != null && activity.isFinishing)
+//            Assent.setFragment(this, null)
     }
 }

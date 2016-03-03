@@ -1,6 +1,7 @@
 package io.vithor.yamvpframework.extensions
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
@@ -25,3 +26,8 @@ fun Activity.getNavigationId(): String {
     val intent = intent
     return intent.getStringExtra("id")
 }
+
+val Activity.safeContext: Context?
+    get() {
+        return if (isFinishing == false) this else null
+    }

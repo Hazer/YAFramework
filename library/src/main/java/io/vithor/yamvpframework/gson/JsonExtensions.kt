@@ -5,7 +5,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 
 /**
- * Created by Hazer on 2/19/16.
+ * Created by Vithorio Polten on 2/19/16.
  */
 
 fun JsonElement.objOrNull(): JsonObject? {

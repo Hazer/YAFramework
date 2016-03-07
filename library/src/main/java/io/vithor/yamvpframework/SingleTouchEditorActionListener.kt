@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 
 /**
- * Created by Hazer on 3/1/16.
+ * Created by Vithorio Polten on 3/1/16.
  */
 
 class SingleTouchEditorActionListener(val action: (v: View?, actionId: Int, event: KeyEvent?) -> Boolean) : TextView.OnEditorActionListener {

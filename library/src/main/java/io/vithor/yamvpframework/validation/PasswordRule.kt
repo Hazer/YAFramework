@@ -5,7 +5,7 @@ import android.text.Editable
 import android.widget.EditText
 
 /**
- * Created by Hazer on 2/16/16.
+ * Created by Vithorio Polten on 2/16/16.
  */
 class PasswordRule(val min: Int = 6,
                    val scheme: Scheme = PasswordRule.Scheme.ANY,

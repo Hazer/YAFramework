@@ -10,7 +10,7 @@ import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import java.lang.reflect.ParameterizedType
 
 /**
- * Created by Hazer on 3/1/16.
+ * Created by Vithorio Polten on 3/1/16.
  */
 abstract class PresentableFragment<P : BasePresenter<SK>, SK : Sketch> : BaseFragment(), Presentable<P, SK> {
 

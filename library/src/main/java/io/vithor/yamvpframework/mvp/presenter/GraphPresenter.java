@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Hazer on 1/10/16.
+ * Created by Vithorio Polten on 1/10/16.
  */
 public abstract class GraphPresenter {
     private List<GraphPresenter> childPresenters = new ArrayList<>(4);

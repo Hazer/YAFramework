@@ -1,7 +1,7 @@
 package io.vithor.yamvpframework
 
 /**
- * Created by Hazer on 1/5/16.
+ * Created by Vithorio Polten on 1/5/16.
  */
 public object ObjectUtils {
     fun isNull(vararg objects: Any?): Boolean {

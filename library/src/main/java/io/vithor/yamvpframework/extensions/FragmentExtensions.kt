@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 
 /**
- * Created by Hazer on 2/22/16.
+ * Created by Vithorio Polten on 2/22/16.
  */
 
 inline fun <reified T : Fragment> FragmentManager.find(tag: String): T? = findFragmentByTag(tag) as? T

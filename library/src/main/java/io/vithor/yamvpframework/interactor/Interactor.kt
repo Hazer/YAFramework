@@ -1,7 +1,7 @@
 package io.vithor.yamvpframework.interactor
 
 /**
- * Created by Hazer on 2/22/16.
+ * Created by Vithorio Polten on 2/22/16.
  */
 interface Interactor {
     operator fun invoke(): Interactor.Event

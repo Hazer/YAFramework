@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.EditText
 
 /**
- * Created by Hazer on 2/18/16.
+ * Created by Vithorio Polten on 2/18/16.
  */
 class CPFRule(message: String? = null, messageId: Int? = null) : Rule<CharSequence?>(0, message, messageId) {
 

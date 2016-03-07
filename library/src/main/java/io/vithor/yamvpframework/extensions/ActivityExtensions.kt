@@ -9,7 +9,7 @@ import android.view.View
 import org.jetbrains.anko.intentFor
 
 /**
- * Created by Hazer on 2/22/16.
+ * Created by Vithorio Polten on 2/22/16.
  */
 inline fun <reified T : Activity> Activity.navigate(id: String, sharedView: View? = null,
                                                     transitionName: String? = null) {

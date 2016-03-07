@@ -13,7 +13,7 @@ import android.support.v4.content.IntentCompat;
 import java.util.List;
 
 /**
- * Created by Hazer on 1/4/16.
+ * Created by Vithorio Polten on 1/4/16.
  */
 public class IntentHelper {
 

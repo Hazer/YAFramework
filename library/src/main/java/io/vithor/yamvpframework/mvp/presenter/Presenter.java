@@ -1,7 +1,7 @@
 package io.vithor.yamvpframework.mvp.presenter;
 
 /**
- * Created by Hazer on 1/8/16.
+ * Created by Vithorio Polten on 1/8/16.
  */
 public interface Presenter {
 }

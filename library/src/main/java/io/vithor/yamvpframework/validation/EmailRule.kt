@@ -5,7 +5,7 @@ import android.widget.EditText
 import org.apache.commons.validator.routines.EmailValidator
 
 /**
- * Created by Hazer on 2/16/16.
+ * Created by Vithorio Polten on 2/16/16.
  */
 class EmailRule : Rule<String>(0) {
 

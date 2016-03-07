@@ -3,7 +3,7 @@ package io.vithor.yamvpframework.extensions
 import android.content.Context
 
 /**
- * Created by Hazer on 2/22/16.
+ * Created by Vithorio Polten on 2/22/16.
  */
 
 fun Context.getDimen(dimenRes: Int): Int {

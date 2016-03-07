@@ -8,7 +8,7 @@ import android.view.animation.Interpolator
 import io.vithor.yamvpframework.SingleClickListener
 
 /**
- * Created by Hazer on 2/22/16.
+ * Created by Vithorio Polten on 2/22/16.
  */
 
 fun View.animateEnter() = animateTranslationY(0, DecelerateInterpolator(3f))

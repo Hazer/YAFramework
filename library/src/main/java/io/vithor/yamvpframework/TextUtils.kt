@@ -3,7 +3,7 @@ package io.vithor.yamvpframework
 import android.text.Editable
 
 /**
- * Created by Hazer on 1/5/16.
+ * Created by Vithorio Polten on 1/5/16.
  */
 public object TextUtils {
     fun isEmpty(vararg strings: String?): Boolean {

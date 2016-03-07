@@ -15,7 +15,7 @@ import java.io.*
 import java.nio.ByteBuffer
 
 /**
- * Created by Hazer on 1/4/16.
+ * Created by Vithorio Polten on 1/4/16.
  */
 public object BitmapUtils {
 

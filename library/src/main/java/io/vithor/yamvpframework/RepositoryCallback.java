@@ -1,7 +1,7 @@
 package io.vithor.yamvpframework;
 
 /**
- * Created by hazer on 5/16/15.
+ * Created by Vithorio Polten on 5/16/15.
  */
 public interface RepositoryCallback<T, R, E extends Throwable> {
     /**

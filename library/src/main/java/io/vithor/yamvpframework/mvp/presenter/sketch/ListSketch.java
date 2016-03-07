@@ -3,7 +3,7 @@ package io.vithor.yamvpframework.mvp.presenter.sketch;
 import android.support.annotation.MainThread;
 
 /**
- * Created by hazer on 5/5/15.
+ * Created by Vithorio Polten on 5/5/15.
  */
 @MainThread
 public interface ListSketch<T> extends Sketch {

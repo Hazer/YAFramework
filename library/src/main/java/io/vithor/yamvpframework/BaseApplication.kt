@@ -5,7 +5,7 @@ import de.halfbit.tinybus.TinyBus
 
 
 /**
- * Created by Hazer on 12/31/15.
+ * Created by Vithorio Polten on 12/31/15.
  */
 open class BaseApplication : MultiDexApplication() {
     val bus: TinyBus by lazy { TinyBus.from(this) }

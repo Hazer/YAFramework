@@ -5,7 +5,7 @@ import android.support.annotation.StringRes
 import android.widget.EditText
 
 /**
- * Created by Hazer on 2/16/16.
+ * Created by Vithorio Polten on 2/16/16.
  */
 class LengthRule(val min: Int = 0, val max: Int, message: String? = null, @StringRes messageId: Int? = null) : Rule<CharSequence>(0, message, messageId) {
 

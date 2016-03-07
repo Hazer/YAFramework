@@ -1,7 +1,7 @@
 package io.vithor.yamvpframework.preferences
 
 /**
- * Created by Hazer on 2/15/16.
+ * Created by Vithorio Polten on 2/15/16.
  */
 
 import android.content.SharedPreferences

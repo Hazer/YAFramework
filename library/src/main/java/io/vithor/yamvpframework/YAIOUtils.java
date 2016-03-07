@@ -74,7 +74,7 @@ import java.nio.channels.FileChannel;
  * @version $Id: IOUtils.java 481854 2006-12-03 18:30:07Z scolebourne $
  */
 /**
- * Created by Hazer on 1/4/16.
+ * Created by Vithorio Polten on 1/4/16.
  */
 public class YAIOUtils {
     // NOTE: This class is focussed on InputStream, OutputStream, Reader and

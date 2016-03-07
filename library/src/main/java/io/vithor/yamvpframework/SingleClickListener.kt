@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewConfiguration
 
 /**
- * Created by Hazer on 2/22/16.
+ * Created by Vithorio Polten on 2/22/16.
  */
 /**
  * Prevents from double clicks on a view, which could otherwise lead to unpredictable states. Useful

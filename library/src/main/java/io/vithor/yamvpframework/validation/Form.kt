@@ -6,7 +6,7 @@ import org.jetbrains.anko.async
 import java.util.*
 
 /**
- * Created by Hazer on 2/16/16.
+ * Created by Vithorio Polten on 2/16/16.
  */
 
 //internal fun validationForm(arg: () -> EditText) {

@@ -5,7 +5,7 @@ import android.support.annotation.MainThread;
 import io.vithor.yamvpframework.mvp.presenter.PresenterAction;
 
 /**
- * Created by Hazer on 1/8/16.
+ * Created by Vithorio Polten on 1/8/16.
  */
 @MainThread
 public interface Sketch {

@@ -5,7 +5,7 @@ import android.text.Editable
 import android.widget.EditText
 
 /**
- * Created by Hazer on 2/16/16.
+ * Created by Vithorio Polten on 2/16/16.
  */
 class NotEmptyRule(message: String? = null, messageId: Int? = null) : Rule<CharSequence?>(0, message = message, messageId = messageId) {
 

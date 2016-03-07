@@ -1,7 +1,7 @@
 package io.vithor.yamvpframework;
 
 /**
- * Created by hazer on 4/20/15.
+ * Created by Vithorio Polten on 4/20/15.
  */
 public class NetworkException extends Exception {
 

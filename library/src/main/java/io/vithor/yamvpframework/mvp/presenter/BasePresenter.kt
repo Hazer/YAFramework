@@ -16,7 +16,7 @@ import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import kotlin.reflect.KClass
 
 /**
- * Created by Hazer on 1/8/16.
+ * Created by Vithorio Polten on 1/8/16.
  */
 abstract class BasePresenter<SK : Sketch> : Presenter {
     private var viewWeak: WeakReference<SK>? = null

@@ -9,7 +9,7 @@ import io.vithor.yamvpframework.ResponseContainer;
 import io.vithor.yamvpframework.mvp.presenter.sketch.TypedSketch;
 
 /**
- * Created by hazer on 5/5/15.
+ * Created by Vithorio Polten on 5/5/15.
  */
 public abstract class SimplePresenter<ModelType, SK extends TypedSketch<ModelType>, ResponseType> extends BasePresenter<SK> {
 

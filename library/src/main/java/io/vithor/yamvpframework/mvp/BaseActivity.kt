@@ -138,9 +138,9 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+    override fun onSaveInstanceState(outState: Bundle?) {
         savedInstanceStateCalled = true
-        super.onSaveInstanceState(outState, outPersistentState)
+        super.onSaveInstanceState(outState)
     }
 }
 

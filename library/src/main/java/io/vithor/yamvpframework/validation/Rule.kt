@@ -1,7 +1,7 @@
 package io.vithor.yamvpframework.validation
 
 /**
- * Created by Hazer on 2/16/16.
+ * Created by Vithorio Polten on 2/16/16.
  */
 
 

@@ -16,7 +16,7 @@ import de.halfbit.tinybus.TinyBus
 import io.vithor.yamvpframework.PermissionDelegate
 
 /**
- * Created by Hazer on 12/22/15.
+ * Created by Vithorio Polten on 12/22/15.
  */
 abstract class BaseFragment : Fragment() {
     private val mBus: TinyBus by lazy { TinyBus.from(context.applicationContext) }

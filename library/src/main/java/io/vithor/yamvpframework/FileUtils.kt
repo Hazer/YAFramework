@@ -5,7 +5,7 @@ import com.orhanobut.logger.Logger
 import java.io.File
 
 /**
- * Created by Hazer on 1/17/16.
+ * Created by Vithorio Polten on 1/17/16.
  */
 public object FileUtils {
     fun renameImage(imageFile: File, newName: File): File {

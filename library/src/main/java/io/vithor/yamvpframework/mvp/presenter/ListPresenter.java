@@ -23,7 +23,7 @@ public abstract class ListPresenter<SK extends ListSketch<ModelType>, ModelType,
     protected final PresenterCallback<ModelType, ResponseType> defaultHandler(PresenterAction action) {
         return new PresenterCallback<ModelType, ResponseType>(this, action) {
             @Override
-            public void success(ModelType modelType, @NotNull ResponseContainer<ResponseType> response, @NotNull PresenterAction action) throws ViewDetachedException {
+            public void success(ModelType modelType, @NotNull ResponseContainer<ResponseType> response, @NotNull PresenterAction action) {
                 successHandler(action, modelType, response);
             }
         };
@@ -32,24 +32,26 @@ public abstract class ListPresenter<SK extends ListSketch<ModelType>, ModelType,
     protected abstract void loadData(PresenterAction action);
 
     protected void showLoading(PresenterAction action) {
-        try {
-            getView().showLoading(action);
-        } catch (ViewDetachedException ignore) {
+        SK view = getView();
+        if (view != null)
+            view.showLoading(action);
 
-        }
     }
 
-    protected void successHandler(PresenterAction action, ModelType model, ResponseContainer rawResponse) throws ViewDetachedException {
-        switch (action) {
-            case PULL_TO_REFRESH:
-                getView().onRefreshCompleted(model);
-                break;
-            case PAGINATE_FORWARD:
-                getView().onMoreDataFetched(model);
-                break;
-            default:
-                getView().showData(model);
-                getView().showContent();
+    protected void successHandler(PresenterAction action, ModelType model, ResponseContainer rawResponse) {
+        SK view = getView();
+        if (view != null) {
+            switch (action) {
+                case PULL_TO_REFRESH:
+                    view.onRefreshCompleted(model);
+                    break;
+                case PAGINATE_FORWARD:
+                    view.onMoreDataFetched(model);
+                    break;
+                default:
+                    view.showData(model);
+                    view.showContent();
+            }
         }
     }
 

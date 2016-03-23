@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">YAMVP Framework</string>
-    <string name="permission_rationale_title">Rationale Title</string>
-    <string name="permission_rationale_message">Rationale Message</string>
-    <string name="cannot_create_account">Não foi possível criar a conta</string>
+    <string name="permission_rationale_title" translatable="false">Rationale Title</string>
+    <string name="permission_rationale_message" translatable="false">Rationale Message</string>
+    <string name="cannot_create_account" translatable="false">Não foi possível criar a conta</string><!-- TODO: Move this -->
 </resources>

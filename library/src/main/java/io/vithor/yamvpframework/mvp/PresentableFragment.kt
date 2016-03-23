@@ -30,6 +30,16 @@ abstract class PresentableFragment<P : BasePresenter<SK>, SK : Sketch> : BaseFra
         return inst ?: throw IllegalStateException("Class ${presenterClass?.simpleName} must have a public no-args constructor.")
     }
 
+    override fun activePresenter(): P? {
+        return presenter
+    }
+
+    override final fun createPresenter(presentable: Presentable<*, *>?): P {
+        val presenter = createPresenter()
+        presenter.parent = presentable?.activePresenter()
+        return presenter
+    }
+
     @CallSuper
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

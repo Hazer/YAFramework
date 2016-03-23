@@ -1,5 +1,7 @@
 package io.vithor.yamvpframework.mvp.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.orhanobut.logger.Logger;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +23,7 @@ public abstract class SimplePresenter<ModelType, SK extends TypedSketch<ModelTyp
     protected final PresenterCallback<ModelType, ResponseType> defaultHandler(PresenterAction action) {
         return new PresenterCallback<ModelType, ResponseType>(this, action) {
             @Override
-            public void success(ModelType modelType, @NotNull ResponseContainer<ResponseType> response, @NotNull PresenterAction action) throws ViewDetachedException {
+            public void success(ModelType modelType, @NotNull ResponseContainer<ResponseType> response, @NotNull PresenterAction action) {
                 successHandler(action, modelType, response);
             }
         };
@@ -30,20 +32,23 @@ public abstract class SimplePresenter<ModelType, SK extends TypedSketch<ModelTyp
     protected abstract void loadData(PresenterAction action);
 
     protected void showLoading(PresenterAction action) {
-        try {
-            getView().showLoading(action);
-        } catch (ViewDetachedException ignore) {
+        SK view = getView();
+        if (view != null) {
+            view.showLoading(action);
+        }
 
+    }
+
+    protected void successHandler(PresenterAction action, ModelType t, ResponseContainer rawResponse) {
+        SK view = getView();
+        if (view != null) {
+            view.showData(t);
+            view.showContent();
         }
     }
 
-    protected void successHandler(PresenterAction action, ModelType t, ResponseContainer rawResponse) throws ViewDetachedException {
-        getView().showData(t);
-        getView().showContent();
-    }
-
     @Override
-    public void handleRestFailure(ErrorContainer error, PresenterAction action) throws ViewDetachedException {
+    public void handleRestFailure(@NonNull ErrorContainer error, @NonNull PresenterAction action) throws ViewDetachedException {
         Logger.e(error.getError(), "RestError");
 //        RetrofitError retrofitError = (RetrofitError) error.getError();
 

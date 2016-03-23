@@ -2,7 +2,7 @@ package io.vithor.yamvpframework.validation
 
 import android.content.Context
 import android.widget.EditText
-import org.apache.commons.validator.routines.EmailValidator
+import io.vithor.yamvpframework.validation.commons.EmailValidator
 
 /**
  * Created by Vithorio Polten on 2/16/16.

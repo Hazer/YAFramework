@@ -21,32 +21,19 @@ import kotlin.reflect.KClass
 abstract class BasePresenter<SK : Sketch> : Presenter {
     private var viewWeak: WeakReference<SK>? = null
     internal var shouldLoadData = true
-    protected val mLock = Object()
+
+    var parent: BasePresenter<*>? = null
 
     protected val view: SK?
-        @Throws(ViewDetachedException::class)
-        get() {
-            if (!isViewAttached) {
-//                throw ViewDetachedException()
-                return null
-            }
-            return viewWeak?.get()
-        }
+        get() = viewWeak?.get()
 
     val context: Context?
         get() {
-            try {
-                if (view is Context) {
-                    return view as Context
-
-                } else if (view is Fragment) {
-                    return (view as Fragment).activity
-
-                }
-            } catch (e: ViewDetachedException) {
-                Logger.e(e, "Context null")
+            if (view is Context) {
+                return view as? Context
+            } else if (view is Fragment) {
+                return (view as? Fragment)?.activity
             }
-
             return null
         }
 
@@ -54,8 +41,7 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
      * Checks if a viewWeak is attached to this presenter. You should always call this method before
      * calling [.getView] to get the viewWeak instance.
      */
-    protected val isViewAttached: Boolean
-        get() = viewWeak != null && viewWeak?.get() != null
+    protected val isViewAttached: Boolean = viewWeak?.get() != null
 
     init {
         Logger.d("Presenter Generated")
@@ -90,11 +76,13 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
      */
     @CallSuper
     open fun onDestroy() {
+        parent = null
         Logger.d("Releasing Presenter")
         PresenterBucket.release(this.javaClass.kotlin)
     }
 
-    open fun beforeAttachView() { }
+    open fun beforeAttachView() {
+    }
 
     companion object {
         fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(type: KClass<P>?): P? {
@@ -109,16 +97,18 @@ abstract class PresenterCallback<T, RT>(private val presenter: BasePresenter<*>,
         presenter.shouldLoadData = true
         try {
             success(t, response, action)
-        } catch (ignore: ViewDetachedException) { }
+        } catch (ignore: ViewDetachedException) {
+        }
     }
 
-    @Throws(ViewDetachedException::class)
+//    @Throws(ViewDetachedException::class)
     abstract fun success(t: T, response: ResponseContainer<RT>, action: PresenterAction)
 
     override fun failure(error: ErrorContainer<Throwable>) {
         presenter.shouldLoadData = true
         try {
             presenter.handleRestFailure(error, action)
-        } catch (ignore: ViewDetachedException) { }
+        } catch (ignore: ViewDetachedException) {
+        }
     }
 }

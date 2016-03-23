@@ -42,6 +42,10 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
     }
     //    protected abstract fun createPresenter(): P
 
+    override fun activePresenter(): P? {
+        return presenter
+    }
+
     /**
      * Called during onCreate step, after view and presenter created, but before presenter.attachView(this)
      * Be careful, this is not called after onCreate, this is called DURING onCreate.

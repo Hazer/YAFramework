@@ -13,12 +13,14 @@ import io.vithor.yamvpframework.ErrorContainer
 import io.vithor.yamvpframework.RepositoryCallback
 import io.vithor.yamvpframework.ResponseContainer
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
 import kotlin.reflect.KClass
 
 /**
  * Created by Vithorio Polten on 1/8/16.
  */
-abstract class BasePresenter<SK : Sketch> : Presenter {
+abstract class BasePresenter<SK : Sketch> : Presenter, AnkoLogger {
     private var viewWeak: WeakReference<SK>? = null
     internal var shouldLoadData = true
 
@@ -44,7 +46,7 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
     protected val isViewAttached: Boolean = viewWeak?.get() != null
 
     init {
-        Logger.d("Presenter Generated")
+        debug("Presenter Generated")
         PresenterBucket.add(this)
     }
 
@@ -52,7 +54,7 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
 
     @CallSuper
     fun attachView(view: SK) {
-        Logger.d("View Attached")
+        debug("View Attached")
         this.viewWeak = WeakReference(view)
         onViewAttached()
     }
@@ -77,7 +79,7 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
     @CallSuper
     open fun onDestroy() {
         parent = null
-        Logger.d("Releasing Presenter")
+        debug("Releasing Presenter")
         PresenterBucket.release(this.javaClass.kotlin)
     }
 
@@ -95,10 +97,10 @@ abstract class PresenterCallback<T, RT>(private val presenter: BasePresenter<*>,
 
     override fun success(t: T, response: ResponseContainer<RT>) {
         presenter.shouldLoadData = true
-        try {
+//        try {
             success(t, response, action)
-        } catch (ignore: ViewDetachedException) {
-        }
+//        } catch (ignore: ViewDetachedException) {
+//        }
     }
 
 //    @Throws(ViewDetachedException::class)

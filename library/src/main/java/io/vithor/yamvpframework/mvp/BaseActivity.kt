@@ -1,5 +1,6 @@
 package io.vithor.yamvpframework.mvp
 
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.annotation.CallSuper
@@ -108,31 +109,39 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
     }
 
     override final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
-        if (Assent.isPermissionGranted(permission)) {
-            granted()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            granted.invoke()
         } else {
-            Assent.requestPermissions(AssentCallback {
-                if (it.allPermissionsGranted()) {
-                    granted()
-                } else {
-                    notGranted()
-                }
-            }, permission.hashCode(), permission)
+            if (Assent.isPermissionGranted(permission)) {
+                granted()
+            } else {
+                Assent.requestPermissions(AssentCallback {
+                    if (it.allPermissionsGranted()) {
+                        granted()
+                    } else {
+                        notGranted()
+                    }
+                }, 221, permission)
+            }
         }
     }
 
     override final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
-        val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
-        if (permissionsGranted) {
-            granted()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            granted.invoke()
         } else {
-            Assent.requestPermissions({ result ->
-                if (result?.allPermissionsGranted() == true) {
-                    granted()
-                } else {
-                    notGranted()
-                }
-            }, 220, permissions)
+            val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
+            if (permissionsGranted) {
+                granted()
+            } else {
+                Assent.requestPermissions({ result ->
+                    if (result?.allPermissionsGranted() == true) {
+                        granted()
+                    } else {
+                        notGranted()
+                    }
+                }, 220, permissions)
+            }
         }
     }
 
@@ -147,4 +156,3 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
         super.onSaveInstanceState(outState)
     }
 }
-

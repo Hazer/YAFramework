@@ -73,6 +73,7 @@ dependencies {
     compile "com.android.support:support-v4:${libraries.supportVersion}"
     compile "com.android.support:percent:${libraries.supportVersion}"
     compile "com.android.support:recyclerview-v7:${libraries.supportVersion}"
+    compile "com.android.support:customtabs:${libraries.supportVersion}"
 
     compile "org.jetbrains.anko:anko-sdk23:${libraries.ankoVersion}"
     compile "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
@@ -126,7 +127,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:${rootProject.ext.buildConfiguration.kotlinVersion}"
     compile "com.google.code.gson:gson:${libraries.gsonVersion}"
 
-    compile 'com.github.Hazer:Raven-Android:0.1.1'
+    compile 'com.github.Hazer:Raven-Android:0.1.6'
+//    compile project(":sentry")
 }
 
 task sourcesJar(type: Jar) {

@@ -6,28 +6,39 @@ import android.view.View
 import io.vithor.yamvpframework.BaseFragment
 import io.vithor.yamvpframework.mvp.presenter.BasePresenter
 import io.vithor.yamvpframework.mvp.presenter.Presentable
+import io.vithor.yamvpframework.mvp.presenter.TagPresenter
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import java.lang.reflect.ParameterizedType
 
 /**
  * Created by Vithorio Polten on 3/1/16.
  */
-abstract class PresentableFragment<P : BasePresenter<SK>, SK : Sketch> : BaseFragment(), Presentable<P, SK> {
+abstract class PresentableFragment<P : TagPresenter<SK>, SK : Sketch> : BaseFragment(), Presentable<P, SK> {
 
     var presenter: P? = null
         private set
 
     private var presenterClass: Class<P>? = null
+        get() {
+            if (field == null) {
+                field = Class.forName(presenterClassString) as Class<P>?
+            }
+            return field
+        }
+
+    private val presenterClassString: String by lazy { createPresenterClassString() }
+
+    private fun createPresenterClassString(): String {
+        val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
+        return type.toString().substring(6)
+    }
+
+    open protected val presenterTag: String by lazy { presenterClassString }
 
     override final fun createPresenter(): P {
-        if (presenterClass == null) {
-            val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
-            val name = type.toString().substring(6)
-            presenterClass = Class.forName(name) as? Class<P> ?: throw IllegalStateException("Class ${name} does not extends from BasePresenter or the Sketch implemented its not the same from BaseActivity.")
-        }
-        var inst = BasePresenter.getActiveInstance(presenterClass?.kotlin)
-        inst = inst ?: presenterClass?.newInstance()
-        return inst ?: throw IllegalStateException("Class ${presenterClass?.simpleName} must have a public no-args constructor.")
+        var inst: P? = BasePresenter.getActiveInstance<P, SK>(tag=presenterTag)
+        inst = inst ?: presenterClass?.getConstructor(String::class.java)?.newInstance(presenterTag)
+        return inst ?: throw IllegalStateException("Class ${presenterClassString} must have a public no-args constructor.")
     }
 
     override fun activePresenter(): P? {

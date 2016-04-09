@@ -45,11 +45,6 @@ abstract class BasePresenter<SK : Sketch> : Presenter, AnkoLogger {
      */
     protected val isViewAttached: Boolean = viewWeak?.get() != null
 
-    init {
-        debug("Presenter Generated")
-        PresenterBucket.add(this)
-    }
-
     protected abstract fun onViewAttached()
 
     @CallSuper
@@ -79,8 +74,6 @@ abstract class BasePresenter<SK : Sketch> : Presenter, AnkoLogger {
     @CallSuper
     open fun onDestroy() {
         parent = null
-        debug("Releasing Presenter")
-        PresenterBucket.release(this.javaClass.kotlin)
     }
 
     open fun beforeAttachView() {
@@ -88,7 +81,11 @@ abstract class BasePresenter<SK : Sketch> : Presenter, AnkoLogger {
 
     companion object {
         fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(type: KClass<P>?): P? {
-            return PresenterBucket.getRetainedInstance(type as KClass<out BasePresenter<out Sketch>>) as? P
+            return PresenterBucket.Singletons.getRetainedInstance(type as KClass<out BasePresenter<out Sketch>>) as? P
+        }
+
+        fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(tag: String): P? {
+            return PresenterBucket.getRetainedInstance(tag) as? P
         }
     }
 }
@@ -112,5 +109,40 @@ abstract class PresenterCallback<T, RT>(private val presenter: BasePresenter<*>,
             presenter.handleRestFailure(error, action)
         } catch (ignore: ViewDetachedException) {
         }
+    }
+}
+
+
+abstract class TagPresenter<SK : Sketch>(val tag: String) : BasePresenter<SK>() {
+    init {
+        debug("Presenter Generated")
+        PresenterBucket.add(tag, this)
+    }
+
+    /**
+     * Called in {onDestroy()} to remove this presenter from in-memory persistence.
+     */
+    @CallSuper
+    override fun onDestroy() {
+        super.onDestroy()
+        debug("Releasing Presenter")
+        PresenterBucket.release(tag)
+    }
+}
+
+abstract class SingletonPresenter<SK : Sketch> : BasePresenter<SK>() {
+    init {
+        debug("Presenter Generated")
+        PresenterBucket.Singletons.add(this)
+    }
+
+    /**
+     * Called in {onDestroy()} to remove this presenter from in-memory persistence.
+     */
+    @CallSuper
+    override fun onDestroy() {
+        super.onDestroy()
+        debug("Releasing Presenter")
+        PresenterBucket.Singletons.release(this.javaClass.kotlin)
     }
 }

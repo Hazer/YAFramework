@@ -21,6 +21,11 @@ import io.vithor.yamvpframework.PermissionDelegate
 abstract class BaseFragment : Fragment() {
     private val mBus: TinyBus by lazy { TinyBus.from(context.applicationContext) }
 
+    var isFirstLaunch: Boolean = false
+        private set
+
+    protected abstract val layoutID: Int
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        Assent.setFragment(this, this)
@@ -33,13 +38,16 @@ abstract class BaseFragment : Fragment() {
         //        Icepick.saveInstanceState<BaseFragment>(this, outState)
     }
 
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        Assent.handleResult(permissions, grantResults)
 //    }
 
-    protected abstract val layoutID: Int
+    //    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    //        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    //        Assent.handleResult(permissions, grantResults)
 
+    /**
+     * Be careful, this method is sometimes called before onCreateView when inside ViewPager
+     */
+    @CallSuper
     open fun onFragmentVisible() {
 
     }
@@ -57,8 +65,15 @@ abstract class BaseFragment : Fragment() {
 //        ButterKnife.unbind(this)
     }
 
+    @CallSuper
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
+        if (view == null) {
+            this.isFirstLaunch = true
+        } else {
+            this.isFirstLaunch = false
+        }
+        Logger.d("First launch: ${isFirstLaunch}")
         if (isVisibleToUser) {
             onFragmentVisible()
         }

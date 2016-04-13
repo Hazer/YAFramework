@@ -9,6 +9,7 @@ import com.afollestad.assent.Assent
 import com.afollestad.assent.AssentCallback
 import com.orhanobut.logger.Logger
 import io.vithor.yamvpframework.PermissionDelegate
+import io.vithor.yamvpframework.extensions.find
 import io.vithor.yamvpframework.mvp.presenter.BasePresenter
 import io.vithor.yamvpframework.mvp.presenter.Presentable
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
@@ -154,5 +155,9 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
     override fun onSaveInstanceState(outState: Bundle?) {
         savedInstanceStateCalled = true
         super.onSaveInstanceState(outState)
+    }
+
+    inline final fun <reified T : PresentableFragment<*, *>> findFragment(tag: String, java: Class<T>): T {
+        return supportFragmentManager.find<T>(tag = tag) ?: java.newInstance()
     }
 }

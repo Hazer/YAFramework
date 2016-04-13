@@ -18,7 +18,7 @@ fun SharedPreferences.Editor.eraseAsync() {
     apply()
 }
 
-fun Context.preferencesEditor (vararg pairs: Pair<String, Any>): SharedPreferences.Editor {
+fun Context.preferencesEditor (vararg pairs: Pair<String, Any?>): SharedPreferences.Editor {
     val editor = PreferenceManager.getDefaultSharedPreferences(this).edit()
 
     for ((key, value) in pairs) {
@@ -36,7 +36,8 @@ fun Context.preferencesEditor (vararg pairs: Pair<String, Any>): SharedPreferenc
             is Long -> editor.putLong(key, value)
             is Float -> editor.putFloat(key, value)
             is Boolean -> editor.putBoolean(key, value)
-            else -> throw IllegalArgumentException("Unsupported value type: ${value.javaClass}")
+            is Any? -> editor.remove(key)
+            else -> throw IllegalArgumentException("Unsupported value type: ${value?.javaClass}")
         }
     }
 

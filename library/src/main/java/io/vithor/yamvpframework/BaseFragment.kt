@@ -1,19 +1,16 @@
 package io.vithor.yamvpframework
 
+//import butterknife.ButterKnife
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.afollestad.assent.AfterPermissionResult
-//import butterknife.ButterKnife
 import com.afollestad.assent.Assent
 import com.afollestad.assent.AssentCallback
-import com.afollestad.assent.PermissionResultSet
-import com.orhanobut.logger.Logger
 import de.halfbit.tinybus.TinyBus
-import io.vithor.yamvpframework.PermissionDelegate
 
 /**
  * Created by Vithorio Polten on 12/22/15.
@@ -28,17 +25,17 @@ abstract class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        Assent.setFragment(this, this)
+        //        Assent.setFragment(this, this)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-//        Icepick.saveInstanceState(this, outState)
+        //        Icepick.saveInstanceState(this, outState)
         //        Akatsuki.save(this, outState);
         //        Icepick.saveInstanceState<BaseFragment>(this, outState)
     }
 
-//    }
+    //    }
 
     //    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
     //        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -55,14 +52,14 @@ abstract class BaseFragment : Fragment() {
     @CallSuper
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(layoutID, container, false)
-//        ButterKnife.bind(this, rootView)
+        //        ButterKnife.bind(this, rootView)
         return rootView
     }
 
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
-//        ButterKnife.unbind(this)
+        //        ButterKnife.unbind(this)
     }
 
     @CallSuper
@@ -73,7 +70,7 @@ abstract class BaseFragment : Fragment() {
         } else {
             this.isFirstLaunch = false
         }
-        Logger.d("First launch: ${isFirstLaunch}")
+        //        Logger.d("First launch: ${isFirstLaunch}")
         if (isVisibleToUser) {
             onFragmentVisible()
         }
@@ -90,7 +87,11 @@ abstract class BaseFragment : Fragment() {
     }
 
     final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
-        if (activity is PermissionDelegate) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            granted.invoke()
+        } else {
+            //            if (activity is PermissionDelegate) {
+            //                activity.askPermission(permission, granted, notGranted)
             if (Assent.isPermissionGranted(permission)) {
                 granted()
             } else {
@@ -102,13 +103,18 @@ abstract class BaseFragment : Fragment() {
                     }
                 }, permission.hashCode(), permission)
             }
-        } else {
-            Logger.e("Permission error")
+            //            } else {
+            //                Logger.e("Permission error")
+            //            }
         }
     }
 
     final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
-        if (activity is PermissionDelegate) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            granted.invoke()
+        } else {
+            //            if (activity is PermissionDelegate) {
+            //                activity.askPermissions(permissions, granted, notGranted)
             val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
             if (permissionsGranted) {
                 granted()
@@ -121,19 +127,25 @@ abstract class BaseFragment : Fragment() {
                     }
                 }, 234, permissions)
             }
-        } else {
-            Logger.e("Permission error")
+            //            } else {
+            //                Logger.e("Permission error")
+            //            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-//        Assent.setFragment(this, this)
+        //        Assent.setFragment(this, this)
     }
 
     override fun onPause() {
         super.onPause()
-//        if (activity != null && activity.isFinishing)
-//            Assent.setFragment(this, null)
+        //        if (activity != null && activity.isFinishing)
+        //            Assent.setFragment(this, null)
+    }
+
+    @CallSuper
+    open fun onBackPressedCallback() {
+
     }
 }

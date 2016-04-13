@@ -67,11 +67,13 @@ public class ProgressDialogFragment extends DialogFragment {
     }
 
     public static void dismissLoadingProgress(FragmentManager fragman) {
-        FragmentTransaction tr = fragman.beginTransaction();
-        Fragment frag = fragman.findFragmentByTag("loading");
-        if(frag != null){
-            tr.remove(frag);
+        if (fragman != null && !fragman.isDestroyed()) {
+            FragmentTransaction tr = fragman.beginTransaction();
+            Fragment frag = fragman.findFragmentByTag("loading");
+            if (frag != null) {
+                tr.remove(frag);
+            }
+            tr.commitAllowingStateLoss();
         }
-        tr.commitAllowingStateLoss();
     }
 }

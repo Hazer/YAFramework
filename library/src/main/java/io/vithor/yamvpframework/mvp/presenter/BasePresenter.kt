@@ -2,25 +2,19 @@ package io.vithor.yamvpframework.mvp.presenter
 
 import android.content.Context
 import android.support.annotation.CallSuper
-import android.support.annotation.MainThread
 import android.support.v4.app.Fragment
-
-import com.orhanobut.logger.Logger
-
-import java.lang.ref.WeakReference
-
 import io.vithor.yamvpframework.ErrorContainer
 import io.vithor.yamvpframework.RepositoryCallback
 import io.vithor.yamvpframework.ResponseContainer
+import io.vithor.yamvpframework.extensions.debugLog
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.debug
+import java.lang.ref.WeakReference
 import kotlin.reflect.KClass
 
 /**
  * Created by Vithorio Polten on 1/8/16.
  */
-abstract class BasePresenter<SK : Sketch> : Presenter, AnkoLogger {
+abstract class BasePresenter<SK : Sketch> : Presenter {
     private var viewWeak: WeakReference<SK>? = null
     internal var shouldLoadData = true
 
@@ -49,7 +43,7 @@ abstract class BasePresenter<SK : Sketch> : Presenter, AnkoLogger {
 
     @CallSuper
     fun attachView(view: SK) {
-        debug("View Attached")
+        debugLog("View Attached")
         this.viewWeak = WeakReference(view)
         onViewAttached()
     }
@@ -115,7 +109,7 @@ abstract class PresenterCallback<T, RT>(private val presenter: BasePresenter<*>,
 
 abstract class TagPresenter<SK : Sketch>(val tag: String) : BasePresenter<SK>() {
     init {
-        debug("Presenter Generated")
+        debugLog("Presenter Generated")
         PresenterBucket.add(tag, this)
     }
 
@@ -125,14 +119,14 @@ abstract class TagPresenter<SK : Sketch>(val tag: String) : BasePresenter<SK>() 
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        debug("Releasing Presenter")
+        debugLog("Releasing Presenter")
         PresenterBucket.release(tag)
     }
 }
 
 abstract class SingletonPresenter<SK : Sketch> : BasePresenter<SK>() {
     init {
-        debug("Presenter Generated")
+        debugLog("Presenter Generated")
         PresenterBucket.Singletons.add(this)
     }
 
@@ -142,7 +136,7 @@ abstract class SingletonPresenter<SK : Sketch> : BasePresenter<SK>() {
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        debug("Releasing Presenter")
+        debugLog("Releasing Presenter")
         PresenterBucket.Singletons.release(this.javaClass.kotlin)
     }
 }

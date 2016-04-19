@@ -16,7 +16,7 @@ import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import io.vithor.yamvpframework.validation.FailedRule
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActivity(), Presentable<P, SK>, Sketch, PermissionDelegate {
+abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActivity(), Presentable<P, SK>, Sketch /*, PermissionDelegate*/ {
 
     var presenter: P? = null
         private set
@@ -108,43 +108,44 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         Assent.handleResult(permissions, grantResults)
     }
-
-    override final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            granted.invoke()
-        } else {
-            if (Assent.isPermissionGranted(permission)) {
-                granted()
-            } else {
-                Assent.requestPermissions(AssentCallback {
-                    if (it.allPermissionsGranted()) {
-                        granted()
-                    } else {
-                        notGranted()
-                    }
-                }, 221, permission)
-            }
-        }
-    }
-
-    override final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            granted.invoke()
-        } else {
-            val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
-            if (permissionsGranted) {
-                granted()
-            } else {
-                Assent.requestPermissions({ result ->
-                    if (result?.allPermissionsGranted() == true) {
-                        granted()
-                    } else {
-                        notGranted()
-                    }
-                }, 220, permissions)
-            }
-        }
-    }
+//
+//    override final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//            granted.invoke()
+//        } else {
+//            if (Assent.isPermissionGranted(permission)) {
+//                granted()
+//            } else {
+//                Assent.requestPermissions(AssentCallback {
+//                    if (it.allPermissionsGranted()) {
+//                        granted()
+//                    } else {
+//                        notGranted()
+//                    }
+//                }, 221, permission)
+//            }
+//        }
+//
+//    }
+//
+//    override final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//            granted.invoke()
+//        } else {
+//            val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
+//            if (permissionsGranted) {
+//                granted()
+//            } else {
+//                Assent.requestPermissions({ result ->
+//                    if (result?.allPermissionsGranted() == true) {
+//                        granted()
+//                    } else {
+//                        notGranted()
+//                    }
+//                }, 220, permissions)
+//            }
+//        }
+//    }
 
     protected fun showErrors(failedRules: List<FailedRule>) {
         failedRules.forEach {

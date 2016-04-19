@@ -85,53 +85,53 @@ abstract class BaseFragment : Fragment() {
         mBus.unregister(this)
         super.onStop()
     }
-
-    final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            granted.invoke()
-        } else {
-            //            if (activity is PermissionDelegate) {
-            //                activity.askPermission(permission, granted, notGranted)
-            if (Assent.isPermissionGranted(permission)) {
-                granted()
-            } else {
-                Assent.requestPermissions(AssentCallback {
-                    if (it.allPermissionsGranted()) {
-                        granted()
-                    } else {
-                        notGranted()
-                    }
-                }, permission.hashCode(), permission)
-            }
-            //            } else {
-            //                Logger.e("Permission error")
-            //            }
-        }
-    }
-
-    final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            granted.invoke()
-        } else {
-            //            if (activity is PermissionDelegate) {
-            //                activity.askPermissions(permissions, granted, notGranted)
-            val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
-            if (permissionsGranted) {
-                granted()
-            } else {
-                Assent.requestPermissions({ result ->
-                    if (result?.allPermissionsGranted() == true) {
-                        granted()
-                    } else {
-                        notGranted()
-                    }
-                }, 234, permissions)
-            }
-            //            } else {
-            //                Logger.e("Permission error")
-            //            }
-        }
-    }
+//
+//    final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//            granted.invoke()
+//        } else {
+//            //            if (activity is PermissionDelegate) {
+//            //                activity.askPermission(permission, granted, notGranted)
+//            if (Assent.isPermissionGranted(permission)) {
+//                granted()
+//            } else {
+//                Assent.requestPermissions(AssentCallback {
+//                    if (it.allPermissionsGranted()) {
+//                        granted()
+//                    } else {
+//                        notGranted()
+//                    }
+//                }, 233, permission)
+//            }
+//            //            } else {
+//            //                Logger.e("Permission error")
+//            //            }
+//        }
+//    }
+//
+//    final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//            granted.invoke()
+//        } else {
+//            //            if (activity is PermissionDelegate) {
+//            //                activity.askPermissions(permissions, granted, notGranted)
+//            val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
+//            if (permissionsGranted) {
+//                granted()
+//            } else {
+//                Assent.requestPermissions({ result ->
+//                    if (result?.allPermissionsGranted() == true) {
+//                        granted()
+//                    } else {
+//                        notGranted()
+//                    }
+//                }, 234, permissions)
+//            }
+//            //            } else {
+//            //                Logger.e("Permission error")
+//            //            }
+//        }
+//    }
 
     override fun onResume() {
         super.onResume()

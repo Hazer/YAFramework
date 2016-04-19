@@ -100,7 +100,7 @@ dependencies {
     compile 'com.github.orhanobut:logger:1.12'
 
 //    compile project (':assent')
-    compile('com.github.afollestad:assent:0.2.0') {
+    compile('com.github.afollestad:assent:0.2.2') {
         transitive = true
     }
 
@@ -120,16 +120,16 @@ dependencies {
     compile 'com.hannesdorfmann.fragmentargs:annotation:3.0.0'
     kapt 'com.hannesdorfmann.fragmentargs:processor:3.0.0'
 
-    compile 'se.emilsjolander:intentbuilder-api:0.14.0'
-    kapt 'se.emilsjolander:intentbuilder-compiler:0.14.0'
+//    compile 'se.emilsjolander:intentbuilder-api:0.14.0'
+//    kapt 'se.emilsjolander:intentbuilder-compiler:0.14.0'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.buildConfiguration.kotlinVersion}"
 //    compile "org.jetbrains.kotlin:kotlin-reflect:${rootProject.ext.buildConfiguration.kotlinVersion}"
 //    compile 'org.jetbrains.kotlinx:kotlinx.reflect.lite:1.0.0'
     compile "com.google.code.gson:gson:${libraries.gsonVersion}"
 
-    compile 'com.github.Hazer:Raven-Android:0.1.6'
-//    compile project(":sentry")
+//    compile 'com.github.Hazer:Raven-Android:0.1.6'
+    compile project(":sentry")
 }
 
 task sourcesJar(type: Jar) {

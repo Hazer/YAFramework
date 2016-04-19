@@ -9,49 +9,49 @@ import org.json.JSONObject
  * Created by Hazer on 4/15/16.
  */
 
-inline fun Any.debugLog(vararg messages: String?, throwable: Throwable? = null) {
+ fun Any.debugLog(vararg messages: String?, throwable: Throwable? = null) {
     debugBuildOnly {
         Log.d(this.javaClass.simpleName, messages.joinToString(separator = "\n"), throwable)
     }
 }
 
-inline fun Any.debugLog(message: String?, throwable: Throwable? = null) {
+ fun Any.debugLog(message: String?, throwable: Throwable? = null) {
     debugBuildOnly {
         Log.d(this.javaClass.simpleName, message ?: "", throwable)
     }
 }
 
-inline fun Any.infoLog(message: String?, throwable: Throwable? = null) {
+ fun Any.infoLog(message: String?, throwable: Throwable? = null) {
     debugBuildOnly {
         Log.i(this.javaClass.simpleName, message ?: "", throwable)
     }
 }
-
-inline fun Any.errorLog(message: String?, throwable: Throwable? = null) {
+ 
+fun Any.errorLog(message: String?, throwable: Throwable? = null) {
     debugBuildOnly {
         Log.e(this.javaClass.simpleName, message ?: "", throwable)
     }
 }
 
-inline fun Any.wtfLog(message: String?, throwable: Throwable? = null) {
+ fun Any.wtfLog(message: String?, throwable: Throwable? = null) {
     debugBuildOnly {
         Log.wtf(this.javaClass.simpleName, message ?: "", throwable)
     }
 }
 
-inline fun Any.wtfLog(throwable: Throwable? = null) {
+ fun Any.wtfLog(throwable: Throwable? = null) {
     debugBuildOnly {
         Log.w(this.javaClass.simpleName, throwable)
     }
 }
 
-inline fun Any.wLog(message: String?, throwable: Throwable? = null) {
+ fun Any.wLog(message: String?, throwable: Throwable? = null) {
     debugBuildOnly {
         Log.w(this.javaClass.simpleName, message ?: "", throwable)
     }
 }
 
-inline fun Any.wLog(throwable: Throwable? = null) {
+ fun Any.wLog(throwable: Throwable? = null) {
     debugBuildOnly {
         Log.w(this.javaClass.simpleName, throwable)
     }
@@ -63,31 +63,31 @@ fun Any.vLog(message: String?, throwable: Throwable? = null) {
     }
 }
 
-inline fun Any.debugLog(throwable: Throwable? = null, messageLambda: () -> String?) {
+ fun Any.debugLog(throwable: Throwable? = null, messageLambda: () -> String?) {
     debugLog(messageLambda.invoke(), throwable)
 }
 
-inline fun Any.infoLog(throwable: Throwable? = null, messageLambda: () -> String?) {
+ fun Any.infoLog(throwable: Throwable? = null, messageLambda: () -> String?) {
     infoLog(messageLambda.invoke(), throwable)
 }
 
-inline fun Any.errorLog(throwable: Throwable? = null, messageLambda: () -> String?) {
+ fun Any.errorLog(throwable: Throwable? = null, messageLambda: () -> String?) {
     errorLog(messageLambda.invoke(), throwable)
 }
 
-inline fun Any.wtfLog(throwable: Throwable? = null, messageLambda: () -> String?) {
+ fun Any.wtfLog(throwable: Throwable? = null, messageLambda: () -> String?) {
     wtfLog(messageLambda.invoke(), throwable)
 }
 
-inline fun Any.wLog(throwable: Throwable? = null, messageLambda: () -> String?) {
+ fun Any.wLog(throwable: Throwable? = null, messageLambda: () -> String?) {
     wLog(messageLambda.invoke(), throwable)
 }
 
-inline fun Any.vLog(throwable: Throwable? = null, messageLambda: () -> String?) {
+ fun Any.vLog(throwable: Throwable? = null, messageLambda: () -> String?) {
     vLog(messageLambda.invoke(), throwable)
 }
 
-inline fun Any.debugJson(jsonLambda: () -> String?) {
+ fun Any.debugJson(jsonLambda: () -> String?) {
     val json = jsonLambda.invoke()?.trim()
     if (json.isNullOrEmpty()) {
         debugLog("Empty/Null json content")
@@ -109,7 +109,7 @@ inline fun Any.debugJson(jsonLambda: () -> String?) {
     }
 }
 
-inline fun debugBuildOnly(lambda: () -> Unit) {
+ fun debugBuildOnly(lambda: () -> Unit) {
 //    lambda.invoke()
     if (LogConfig.DEBUG) {
         lambda.invoke()

@@ -1,7 +1,10 @@
 package io.vithor.yamvpframework.extensions
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.graphics.drawable.Drawable
+import android.support.v4.view.animation.FastOutLinearInInterpolator
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -32,6 +35,21 @@ fun View.animateTranslationY(translationY: Int, interpolator: Interpolator) {
         setInterpolator(interpolator)
         start()
     }
+}
+
+fun View.animateTranslationX(delay: Long, duration: Long, translationX: Float, interpolator: Interpolator = FastOutLinearInInterpolator()) {
+    animate()
+            .setStartDelay(delay)
+            .setDuration(duration)
+            .setInterpolator(interpolator)
+            .translationX(translationX)
+//            .setListener(object : AnimatorListenerAdapter() {
+//                override fun onAnimationEnd(animation: Animator) {
+//                    super.onAnimationEnd(animation)
+//                    //                        mAnimatingFab = false
+//                }
+//            })
+            .start()
 }
 
 /**

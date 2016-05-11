@@ -21,19 +21,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * <p>Perform email validations.</p>
+ * <p>Perform email validations.
  * <p>
  * This class is a Singleton; you can retrieve the instance via the getInstance() method.
- * </p>
+ * 
  * <p>
  * Based on a script by <a href="mailto:stamhankar@hotmail.com">Sandeep V. Tamhankar</a>
  * http://javascript.internet.com
- * </p>
+ * 
  * <p>
  * This implementation is not guaranteed to catch all possible errors in an email address.
  * For example, an address like nobody@noplace.somedog will pass validator, even though there
  * is no TLD "somedog"
- * </p>.
+ * .
  *
  * @version $Revision$ $Date$
  * @since Validator 1.4
@@ -98,7 +98,7 @@ public class EmailValidator implements Serializable {
     }
 
     /**
-     * <p>Checks if a field has a valid e-mail address.</p>
+     * <p>Checks if a field has a valid e-mail address.
      *
      * @param email The value validation is being performed on.  A <code>null</code>
      *              value is considered invalid.

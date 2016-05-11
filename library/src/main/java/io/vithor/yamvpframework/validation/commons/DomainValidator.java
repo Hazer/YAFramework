@@ -22,12 +22,12 @@ package io.vithor.yamvpframework.validation.commons;
         import java.util.Locale;
 
 /**
- * <p><b>Domain name</b> validation routines.</p>
+ * <p><b>Domain name</b> validation routines.
  *
  * <p>
  * This validator provides methods for validating Internet domain names
  * and top-level domains.
- * </p>
+ * 
  *
  * <p>Domain names are evaluated according
  * to the standards <a href="http://www.ietf.org/rfc/rfc1034.txt">RFC1034</a>,
@@ -36,12 +36,12 @@ package io.vithor.yamvpframework.validation.commons;
  * other applications; if the domain name has been URL-encoded, for example,
  * validation will fail even though the equivalent plaintext version of the
  * same name would have passed.
- * </p>
+ * 
  *
  * <p>
  * Validation is also provided for top-level domains (TLDs) as defined and
  * maintained by the Internet Assigned Numbers Authority (IANA):
- * </p>
+ * 
  *
  *   <ul>
  *     <li>{@link #isValidInfrastructureTld} - validates infrastructure TLDs
@@ -56,7 +56,7 @@ package io.vithor.yamvpframework.validation.commons;
  * (<b>NOTE</b>: This class does not provide IP address lookup for domain names or
  * methods to ensure that a given domain name matches a specific IP; see
  * {@link java.net.InetAddress} for that functionality.)
- * </p>
+ * 
  *
  * @version $Revision$
  * @since Validator 1.4
@@ -1578,7 +1578,7 @@ public class DomainValidator implements Serializable {
      * </ul>
      * @param tlds the array of TLDs, must not be null
      * @throws IllegalStateException if the method is called after getInstance
-     * @throws InvalidArgumentException if one of the read-only tables is requested
+     * @throws IllegalArgumentException if one of the read-only tables is requested
      * @since 1.5.0
      */
     public static synchronized void updateTLDOverride(ArrayType table, String [] tlds) {

@@ -1,5 +1,6 @@
 package io.vithor.yamvpframework.mvp
 
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.annotation.CallSuper
@@ -8,13 +9,14 @@ import com.afollestad.assent.Assent
 import com.afollestad.assent.AssentCallback
 import com.orhanobut.logger.Logger
 import io.vithor.yamvpframework.PermissionDelegate
+import io.vithor.yamvpframework.extensions.find
 import io.vithor.yamvpframework.mvp.presenter.BasePresenter
 import io.vithor.yamvpframework.mvp.presenter.Presentable
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import io.vithor.yamvpframework.validation.FailedRule
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActivity(), Presentable<P, SK>, Sketch, PermissionDelegate {
+abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActivity(), Presentable<P, SK>, Sketch /*, PermissionDelegate*/ {
 
     var presenter: P? = null
         private set
@@ -106,35 +108,44 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         Assent.handleResult(permissions, grantResults)
     }
-
-    override final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
-        if (Assent.isPermissionGranted(permission)) {
-            granted()
-        } else {
-            Assent.requestPermissions(AssentCallback {
-                if (it.allPermissionsGranted()) {
-                    granted()
-                } else {
-                    notGranted()
-                }
-            }, permission.hashCode(), permission)
-        }
-    }
-
-    override final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
-        val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
-        if (permissionsGranted) {
-            granted()
-        } else {
-            Assent.requestPermissions({ result ->
-                if (result?.allPermissionsGranted() == true) {
-                    granted()
-                } else {
-                    notGranted()
-                }
-            }, 220, permissions)
-        }
-    }
+//
+//    override final fun askPermission(permission: String, granted: () -> Unit, notGranted: () -> Unit) {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//            granted.invoke()
+//        } else {
+//            if (Assent.isPermissionGranted(permission)) {
+//                granted()
+//            } else {
+//                Assent.requestPermissions(AssentCallback {
+//                    if (it.allPermissionsGranted()) {
+//                        granted()
+//                    } else {
+//                        notGranted()
+//                    }
+//                }, 221, permission)
+//            }
+//        }
+//
+//    }
+//
+//    override final fun askPermissions(vararg permissions: String, granted: () -> Unit, notGranted: () -> Unit) {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//            granted.invoke()
+//        } else {
+//            val permissionsGranted = !permissions.any { !Assent.isPermissionGranted(it) }
+//            if (permissionsGranted) {
+//                granted()
+//            } else {
+//                Assent.requestPermissions({ result ->
+//                    if (result?.allPermissionsGranted() == true) {
+//                        granted()
+//                    } else {
+//                        notGranted()
+//                    }
+//                }, 220, permissions)
+//            }
+//        }
+//    }
 
     protected fun showErrors(failedRules: List<FailedRule>) {
         failedRules.forEach {
@@ -146,5 +157,8 @@ abstract class BaseActivity<P : BasePresenter<SK>, SK : Sketch> : AppCompatActiv
         savedInstanceStateCalled = true
         super.onSaveInstanceState(outState)
     }
-}
 
+    inline final fun <reified T : PresentableFragment<*, *>> findFragment(tag: String, java: Class<T>): T {
+        return supportFragmentManager.find<T>(tag = tag) ?: java.newInstance()
+    }
+}

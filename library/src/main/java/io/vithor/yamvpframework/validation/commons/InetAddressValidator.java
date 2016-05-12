@@ -23,13 +23,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * <p><b>InetAddress</b> validation and conversion routines (<code>java.net.InetAddress</code>).</p>
- * <p/>
+ * <p><b>InetAddress</b> validation and conversion routines (<code>java.net.InetAddress</code>).
+ * 
  * <p>This class provides methods to validate a candidate IP address.
- * <p/>
+ * 
  * <p>
  * This class is a Singleton; you can retrieve the instance via the {@link #getInstance()} method.
- * </p>
+ * 
  *
  * @version $Revision$
  * @since Validator 1.4

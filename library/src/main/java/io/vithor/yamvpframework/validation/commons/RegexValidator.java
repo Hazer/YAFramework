@@ -28,7 +28,7 @@ package io.vithor.yamvpframework.validation.commons;
  * are provided to allow  <i>case in-sensitive</i> validation. For example to create
  * a validator which does <i>case in-sensitive</i> validation for a set of regular
  * expressions:
- * </p>
+ * 
  * <pre>
  * <code>
  * String[] regexs = new String[] {...};
@@ -62,7 +62,7 @@ package io.vithor.yamvpframework.validation.commons;
  * <p>
  * Cached instances pre-compile and re-use {@link Pattern}(s) - which according
  * to the {@link Pattern} API are safe to use in a multi-threaded environment.
- * </p>
+ * 
  *
  * @version $Revision$
  * @since Validator 1.4

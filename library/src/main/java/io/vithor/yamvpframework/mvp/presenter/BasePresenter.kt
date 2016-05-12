@@ -2,17 +2,13 @@ package io.vithor.yamvpframework.mvp.presenter
 
 import android.content.Context
 import android.support.annotation.CallSuper
-import android.support.annotation.MainThread
 import android.support.v4.app.Fragment
-
-import com.orhanobut.logger.Logger
-
-import java.lang.ref.WeakReference
-
 import io.vithor.yamvpframework.ErrorContainer
 import io.vithor.yamvpframework.RepositoryCallback
 import io.vithor.yamvpframework.ResponseContainer
+import io.vithor.yamvpframework.extensions.debugLog
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
+import java.lang.ref.WeakReference
 import kotlin.reflect.KClass
 
 /**
@@ -43,16 +39,11 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
      */
     protected val isViewAttached: Boolean = viewWeak?.get() != null
 
-    init {
-        Logger.d("Presenter Generated")
-        PresenterBucket.add(this)
-    }
-
     protected abstract fun onViewAttached()
 
     @CallSuper
     fun attachView(view: SK) {
-        Logger.d("View Attached")
+        debugLog("View Attached")
         this.viewWeak = WeakReference(view)
         onViewAttached()
     }
@@ -77,8 +68,6 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
     @CallSuper
     open fun onDestroy() {
         parent = null
-        Logger.d("Releasing Presenter")
-        PresenterBucket.release(this.javaClass.kotlin)
     }
 
     open fun beforeAttachView() {
@@ -86,7 +75,11 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
 
     companion object {
         fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(type: KClass<P>?): P? {
-            return PresenterBucket.getRetainedInstance(type as KClass<out BasePresenter<out Sketch>>) as? P
+            return PresenterBucket.Singletons.getRetainedInstance(type as KClass<out BasePresenter<out Sketch>>) as? P
+        }
+
+        fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(tag: String): P? {
+            return PresenterBucket.getRetainedInstance(tag) as? P
         }
     }
 }
@@ -95,10 +88,10 @@ abstract class PresenterCallback<T, RT>(private val presenter: BasePresenter<*>,
 
     override fun success(t: T, response: ResponseContainer<RT>) {
         presenter.shouldLoadData = true
-        try {
+//        try {
             success(t, response, action)
-        } catch (ignore: ViewDetachedException) {
-        }
+//        } catch (ignore: ViewDetachedException) {
+//        }
     }
 
 //    @Throws(ViewDetachedException::class)
@@ -110,5 +103,40 @@ abstract class PresenterCallback<T, RT>(private val presenter: BasePresenter<*>,
             presenter.handleRestFailure(error, action)
         } catch (ignore: ViewDetachedException) {
         }
+    }
+}
+
+
+abstract class TagPresenter<SK : Sketch>(val tag: String) : BasePresenter<SK>() {
+    init {
+        debugLog("Presenter Generated")
+        PresenterBucket.add(tag, this)
+    }
+
+    /**
+     * Called in {onDestroy()} to remove this presenter from in-memory persistence.
+     */
+    @CallSuper
+    override fun onDestroy() {
+        super.onDestroy()
+        debugLog("Releasing Presenter")
+        PresenterBucket.release(tag)
+    }
+}
+
+abstract class SingletonPresenter<SK : Sketch> : BasePresenter<SK>() {
+    init {
+        debugLog("Presenter Generated")
+        PresenterBucket.Singletons.add(this)
+    }
+
+    /**
+     * Called in {onDestroy()} to remove this presenter from in-memory persistence.
+     */
+    @CallSuper
+    override fun onDestroy() {
+        super.onDestroy()
+        debugLog("Releasing Presenter")
+        PresenterBucket.Singletons.release(this.javaClass.kotlin)
     }
 }

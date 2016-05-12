@@ -41,7 +41,7 @@ fun Any.errorLog(message: String?, throwable: Throwable? = null) {
 
  fun Any.wtfLog(throwable: Throwable? = null) {
     debugBuildOnly {
-        Log.w(this.javaClass.simpleName, throwable)
+        Log.wtf(this.javaClass.simpleName, throwable)
     }
 }
 

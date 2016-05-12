@@ -1,0 +1,59 @@
+buildscript {
+    ext.kotlin_version = '1.0.1-2'
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:${rootProject.ext.buildConfiguration.gradleBuildPluginVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${rootProject.ext.buildConfiguration.kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+
+    compile project(':core')
+
+    compile('com.github.afollestad:assent:0.2.2') {
+        transitive = true
+    }
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    compile 'de.halfbit:tinybus:3.0.2'
+    compile 'de.halfbit:tinybus-extensions:3.0.2'
+
+}
+repositories {
+    mavenCentral()
+}

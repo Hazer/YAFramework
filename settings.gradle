@@ -1,1 +1,6 @@
-include ':library'
+include ':core', ':viewutils',
+        ':extensions',
+        ':mvp',
+        ':permissions',
+        ':validation',
+        ':migration'

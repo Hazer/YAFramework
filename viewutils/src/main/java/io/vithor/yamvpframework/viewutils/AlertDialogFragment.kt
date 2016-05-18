@@ -1,70 +1,48 @@
-/*package io.vithor.yamvpframework
-
+package io.vithor.yamvpframework.viewutils
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
-import com.hannesdorfmann.fragmentargs.FragmentArgs
-import com.hannesdorfmann.fragmentargs.annotation.Arg
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
-import icepick.Icepick
+import io.vithor.yamvpframework.extensions.unwrap
+import org.jetbrains.anko.support.v4.withArguments
 
-@FragmentWithArgs
-class AlertDialogFragment:DialogFragment() {
+class AlertDialogFragment: DialogFragment() {
 
-    @Arg
-    internal var mMessage:String? = null
-
-    override fun onCreate(savedInstanceState:Bundle?) {
-        super.onCreate(savedInstanceState)
-        FragmentArgs.inject(this)
-        Icepick.restoreInstanceState(this, savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState:Bundle) {
-        super.onSaveInstanceState(outState)
-        Icepick.saveInstanceState(this, outState)
-    }
-
-    override fun onCreateDialog(savedInstanceState:Bundle):Dialog {
-        return AlertDialog.Builder(getActivity()).setTitle(R.string.cannot_create_account).setMessage(mMessage).setPositiveButton("Ok", object:DialogInterface.OnClickListener() {
-            override fun onClick(dialog:DialogInterface, which:Int) {
-                dialog.dismiss()
-            }
-        }).create()
+    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+        return AlertDialog.Builder(activity)
+                .setTitle(R.string.cannot_create_account)
+                .setMessage(arguments?.getCharSequence("message") ?: "")
+                .setPositiveButton("Ok", { dialog, which ->
+                    dialog.dismiss()
+                }).create()
     }
 
     companion object {
-
         private val FRAG_TAG = "alert"
 
-        fun showAlert(fragman:FragmentManager, message:String) {
-            dismissAlert(fragman)
-            val loading = AlertDialogFragmentBuilder(message).build()
-            loading.show(fragman, FRAG_TAG)
+        fun showAlert(fragMan: FragmentManager, message: String) {
+            dismissAlert(fragMan)
+            val loading = AlertDialogFragment()
+            loading.withArguments(
+                    "message" to message
+            )
+            loading.show(fragMan, FRAG_TAG)
         }
 
-        fun getAlertDialog(fragmentManager:FragmentManager):AlertDialog? {
-            val frag = fragmentManager.findFragmentByTag(FRAG_TAG) as AlertDialogFragment
-            if (frag == null)
-            {
-                return null
-            }
-            return frag!!.getDialog() as AlertDialog
+        fun getAlertDialog(fragmentManager: FragmentManager): AlertDialog? {
+            val frag = fragmentManager.findFragmentByTag(FRAG_TAG) as? AlertDialogFragment
+            return frag?.dialog as? AlertDialog
         }
 
-        fun dismissAlert(fragman:FragmentManager) {
-            val tr = fragman.beginTransaction()
-            val frag = fragman.findFragmentByTag(FRAG_TAG)
-            if (frag != null)
-            {
-                tr.remove(frag)
+        fun dismissAlert(fragMan: FragmentManager) {
+            val tr = fragMan.beginTransaction()
+            val frag = fragMan.findFragmentByTag(FRAG_TAG)
+            frag.unwrap {
+                tr.remove(it)
             }
-            tr.commit()
+            tr.commitAllowingStateLoss()
         }
     }
-
-}*/
+}

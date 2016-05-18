@@ -12,6 +12,8 @@ ext {
             awsSdkVersion      : '2.2.15',
             playServicesVersion: '8.4.0',
     ]
+    GROUP = "com.guizion.frameworks.yaf"
+    VERSION_NAME = "0.0.1"
 }
 
 buildscript {

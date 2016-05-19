@@ -1,5 +1,24 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+def VERSION_NAME = rootProject.ext.VERSION_NAME
+def GROUP = rootProject.ext.GROUP
+def POM_ARTIFACT_ID = project.name
+
+configurations {
+    javadocDeps
+}
+
+kapt {
+    generateStubs = true
+}
 
 android {
     compileSdkVersion 23
@@ -22,12 +41,6 @@ android {
     }
 }
 
-
-kapt {
-    generateStubs = true
-}
-
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -38,15 +51,68 @@ dependencies {
     compile 'com.github.Hazer:Raven-Android:0.1.10'
 
 }
-buildscript {
-    ext.kotlin_version = '1.0.1-2'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
 }
-repositories {
-    mavenCentral()
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.javadocDeps
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+afterEvaluate {
+    publishing.repositories {
+        maven {
+            url "s3://guizion-artfactory/"
+            credentials(AwsCredentials) {
+                accessKey "${guizion_aws_accessid}"
+                secretKey "${guizion_aws_accesskey}"
+            }
+        }
+    }
+
+    publishing.publications {
+        migration(MavenPublication) {
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    if (it.group != null && it.name != null) {
+                        def depGroup = it.group
+                        def depVersion = it.version
+                        if (depGroup.equalsIgnoreCase(rootProject.name)) {
+                            depGroup = GROUP
+                            depVersion = VERSION_NAME
+                        }
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', depGroup)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', depVersion)
+                    }
+                }
+            }
+
+            artifactId = POM_ARTIFACT_ID
+            groupId = GROUP
+            version = VERSION_NAME
+            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
+        }
+    }
 }

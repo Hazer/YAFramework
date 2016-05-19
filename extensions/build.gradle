@@ -1,3 +1,9 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -5,7 +11,19 @@ apply plugin: 'maven-publish'
 
 def VERSION_NAME = rootProject.ext.VERSION_NAME
 def GROUP = rootProject.ext.GROUP
-def POM_ARTIFACT_ID = "extensions"
+def POM_ARTIFACT_ID = project.name
+
+configurations {
+    javadocDeps
+}
+
+kapt {
+    generateStubs = true
+}
+
+configurations {
+    javadocDeps
+}
 
 android {
     compileSdkVersion 23
@@ -28,10 +46,6 @@ android {
     }
 }
 
-kapt {
-    generateStubs = true
-}
-
 dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -47,36 +61,6 @@ dependencies {
     compile "com.google.code.gson:gson:${libraries.gsonVersion}"
 
     //javadocDeps "com.android.support:support-v4:${libraries.supportVersion}"
-}
-
-
-buildscript {
-    ext.kotlin_version = '1.0.1-2'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-android.libraryVariants.all { variant ->
-    def name = variant.buildType.name
-    if (name.equals(com.android.builder.core.BuilderConstants.DEBUG)) {
-        return; // Skip debug builds.
-    }
-    def task = project.tasks.create "jar${name.capitalize()}", Jar
-    task.dependsOn variant.javaCompile
-    task.from variant.javaCompile.destinationDir
-    artifacts.add('archives', task);
-}
-
-configurations {
-    javadocDeps
 }
 
 task sourcesJar(type: Jar) {
@@ -121,10 +105,16 @@ afterEvaluate {
                 //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
                 configurations.compile.allDependencies.each {
                     if (it.group != null && it.name != null) {
+                        def depGroup = it.group
+                        def depVersion = it.version
+                        if (depGroup.equalsIgnoreCase(rootProject.name)) {
+                            depGroup = GROUP
+                            depVersion = VERSION_NAME
+                        }
                         def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('groupId', depGroup)
                         dependencyNode.appendNode('artifactId', it.name)
-                        dependencyNode.appendNode('version', it.version)
+                        dependencyNode.appendNode('version', depVersion)
                     }
                 }
             }

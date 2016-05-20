@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework
+package io.vithor.yamvpframework.viewutils
 
 /**
  * Created by Hazer on 4/11/16.

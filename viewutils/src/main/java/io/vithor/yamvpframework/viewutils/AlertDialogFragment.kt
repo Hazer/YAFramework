@@ -37,12 +37,14 @@ class AlertDialogFragment: DialogFragment() {
         }
 
         fun dismissAlert(fragMan: FragmentManager) {
-            val tr = fragMan.beginTransaction()
-            val frag = fragMan.findFragmentByTag(FRAG_TAG)
-            frag.unwrap {
-                tr.remove(it)
+            if (!fragMan.isDestroyed) {
+                val frag = fragMan.findFragmentByTag(FRAG_TAG)
+                frag.unwrap {
+                    fragMan.beginTransaction()
+                            .remove(it)
+                            .commitAllowingStateLoss()
+                }
             }
-            tr.commitAllowingStateLoss()
         }
     }
 }

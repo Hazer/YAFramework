@@ -1,5 +1,6 @@
-package io.vithor.yamvpframework.extensions
+package io.vithor.yamvpframework.viewutils.extensions
 
+import android.R
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
@@ -31,7 +32,7 @@ fun View.animateExit() = animateTranslationY(-height, AccelerateInterpolator(3f)
 
 fun View.animateTranslationY(translationY: Int, interpolator: Interpolator) {
     with(ObjectAnimator.ofFloat(this, "translationY", translationY.toFloat())) {
-        duration = context.resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+        duration = context.resources.getInteger(R.integer.config_mediumAnimTime).toLong()
         setInterpolator(interpolator)
         start()
     }
@@ -55,6 +56,6 @@ fun View.animateTranslationX(delay: Long, duration: Long, translationX: Float, i
 /**
  * Click listener setter that prevents double click on the view it´s set
  */
-fun View.singleClick(listener: (android.view.View?) -> Unit){
+fun View.singleClick(listener: (View?) -> Unit){
     setOnClickListener(SingleClickListener(listener))
 }

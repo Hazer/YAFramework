@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.extensions
+package io.vithor.yamvpframework.viewutils.extensions
 
 import android.app.Activity
 import android.content.Context
@@ -14,6 +14,6 @@ inline fun <reified T : Fragment> FragmentManager.find(id: Int): T? = findFragme
 
 val Fragment.safeContext: Context?
     get() {
-        var ctx = context as? Activity
+        val ctx = context as? Activity
         return if (ctx?.isFinishing == false) ctx else null
     }

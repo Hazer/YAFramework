@@ -6,7 +6,7 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
-import io.vithor.yamvpframework.extensions.unwrap
+import io.vithor.yamvpframework.core.extensions.unwrap
 import org.jetbrains.anko.support.v4.withArguments
 
 class ProgressDialogFragment : DialogFragment() {

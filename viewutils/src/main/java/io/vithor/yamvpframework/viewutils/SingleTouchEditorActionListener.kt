@@ -1,10 +1,8 @@
 package io.vithor.yamvpframework
 
-import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewConfiguration
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 

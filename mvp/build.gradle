@@ -1,13 +1,16 @@
 buildscript {
     repositories { jcenter() }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${rootProject.ext.buildConfiguration.kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${rootProject.ext.kotlin_version}"
     }
 }
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka-android'
+//apply plugin: 'com.vanniktech.android.apk.size'
+
 
 def VERSION_NAME = rootProject.ext.VERSION_NAME
 def GROUP = rootProject.ext.GROUP

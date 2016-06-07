@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.extensions
+package io.vithor.yamvpframework.core.extensions
 
 /**
  * Created by Hazer on 3/10/16.

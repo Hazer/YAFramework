@@ -8,6 +8,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka-android'
+//apply plugin: 'com.vanniktech.android.apk.size'
+
 
 def VERSION_NAME = rootProject.ext.VERSION_NAME
 def GROUP = rootProject.ext.GROUP
@@ -57,8 +60,7 @@ dependencies {
     compile "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
     compile "org.jetbrains.anko:anko-appcompat-v7:${libraries.ankoVersion}"
 
-    compile "com.android.support:support-v4:${libraries.supportVersion}"
-    compile "com.google.code.gson:gson:${libraries.gsonVersion}"
+    compile "com.google.code.gson:gson:2.6.2"
 
     //javadocDeps "com.android.support:support-v4:${libraries.supportVersion}"
 }

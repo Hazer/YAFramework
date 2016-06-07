@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.extensions
+package io.vithor.yamvpframework.core.extensions
 
 import android.text.Editable
 

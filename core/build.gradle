@@ -7,6 +7,9 @@ buildscript {
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka-android'
+//apply plugin: 'com.vanniktech.android.apk.size'
+
 
 def VERSION_NAME = rootProject.ext.VERSION_NAME
 def GROUP = rootProject.ext.GROUP
@@ -48,6 +51,7 @@ dependencies {
     compile 'de.halfbit:tinybus:3.0.2'
     compile 'de.halfbit:tinybus-extensions:3.0.2'
     compile 'com.android.support:multidex:1.0.1'
+    compile "com.android.support:support-v4:${libraries.supportVersion}"
 }
 
 task sourcesJar(type: Jar) {

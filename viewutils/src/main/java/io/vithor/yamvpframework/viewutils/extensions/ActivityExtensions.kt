@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.extensions
+package io.vithor.yamvpframework.viewutils.extensions
 
 import android.app.Activity
 import android.content.Context

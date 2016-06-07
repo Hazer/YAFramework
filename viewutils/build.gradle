@@ -8,6 +8,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka-android'
+//apply plugin: 'com.vanniktech.android.apk.size'
+
 
 def VERSION_NAME = rootProject.ext.VERSION_NAME
 def GROUP = rootProject.ext.GROUP
@@ -44,7 +47,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':core')
-    compile project(':extensions')
+//    compile project(':extensions')
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -58,6 +61,8 @@ dependencies {
     compile "org.jetbrains.anko:anko-sdk23:${libraries.ankoVersion}"
     compile "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
     compile "org.jetbrains.anko:anko-appcompat-v7:${libraries.ankoVersion}"
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 
     compile 'de.halfbit:tinybus:3.0.2'
     compile 'de.halfbit:tinybus-extensions:3.0.2'

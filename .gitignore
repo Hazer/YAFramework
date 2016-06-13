@@ -1,12 +1,28 @@
 *.iml
 .gradle
 /local.properties
+
+*/.idea/workspace.xml
+*/.idea/libraries
+*/.idea/compiler.xml
+*/.idea/gradle.xml
+*/.idea/inspectionProfiles
+*/.idea/misc.xml
+*/.idea/modules.xml
+*/.idea/vcs.xml
+
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/compiler.xml
+/.idea/gradle.xml
+/.idea/inspectionProfiles
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+
 .DS_Store
 /build
 /captures
-#### joe made this: https://goel.io/joe
 
 #####=== Android ===#####
 
@@ -37,5 +53,3 @@ proguard/
 
 # Log Files
 *.log
-
-.idea

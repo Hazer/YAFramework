@@ -3,4 +3,5 @@ include ':core', ':viewutils',
         ':mvp',
         ':permissions',
         ':validation',
-        ':migration'
+        ':migration',
+        ':rest'

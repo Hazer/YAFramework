@@ -11,7 +11,7 @@ import android.util.Base64InputStream
 import android.util.TypedValue
 import android.view.WindowManager
 import io.vithor.yamvpframework.core.YAIOUtils
-import io.vithor.yamvpframework.core.debugLog
+import io.vithor.yamvpframework.core.extensions.debugLog
 import java.io.*
 import java.nio.ByteBuffer
 
@@ -257,10 +257,11 @@ public object BitmapUtils {
         val ba = bao!!.toByteArray()
         try {
             bao.close()
-            bao = null
         } catch (e: IOException) {
             // Ignore
             e.debugLog { "io in base64" }
+        } finally {
+            bao = null
         }
 
         return "data:image/jpeg;base64," + Base64.encodeToString(ba, Base64.NO_WRAP)

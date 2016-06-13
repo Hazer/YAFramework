@@ -1,4 +1,4 @@
-package com.guizion.mercuryo.api.client.retrofit2
+package io.vithor.yamvpframework.rest.api
 
 import java.io.IOException
 

@@ -2,18 +2,13 @@ package io.vithor.yamvpframework.rest.api
 
 import android.util.Log
 import com.google.gson.GsonBuilder
-import com.guizion.mercuryo.api.client.retrofit2.AuthRequestInterceptor
 import com.moczul.ok2curl.CurlInterceptor
 import com.moczul.ok2curl.logger.Loggable
-import io.vithor.yamvpframework.rest.api.auth.ApiKeyAuth
-import io.vithor.yamvpframework.rest.api.auth.HttpBasicAuth
-import io.vithor.yamvpframework.rest.api.gson.GsonCustomConverterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
-import java.util.logging.Logger
 
 class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, vararg var providedInterceptors: Interceptor) {
 

@@ -41,9 +41,9 @@ abstract class AbstractRepository<API>(val clazz: Class<API>) {
         return client
     }
 
-    class DefaultCallback<T>(val onSuccess: (T) -> Unit, val onError: (ErrorService, ResponseBody?) -> Unit) : Callback<T> {
+    class DefaultCallback<T>(val onSuccess: (T) -> Unit, val onError: (Error, ResponseBody?) -> Unit) : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
-            onError(ErrorService.Factory.from(call.request(), t), null)
+            onError(Error.Factory.from(call.request(), t), null)
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -53,7 +53,7 @@ abstract class AbstractRepository<API>(val clazz: Class<API>) {
                 onSuccess(response.body())
             } else {
                 val responseBody = response.errorBody()
-                onError(ErrorService.Factory.from(call.request(), response), responseBody)
+                onError(Error.Factory.from(call.request(), response), responseBody)
             }
         }
     }

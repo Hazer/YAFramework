@@ -12,21 +12,21 @@ import java.net.ConnectException
 /**
  * Created by Vithorio Polten on 1/4/16.
  */
-class ErrorService(val errorType: ErrorType, val statusCode: HttpStatusCode = HttpStatusCode(0), val responseBody: ResponseBody? = null, val errorBody: String? = null, val request: Request? = null) {
+class Error(val errorType: ErrorType, val statusCode: HttpStatusCode = HttpStatusCode(0), val responseBody: ResponseBody? = null, val errorBody: String? = null, val request: Request? = null) {
 
     object Factory {
-        fun from(request: Request, t: Throwable): ErrorService {
+        fun from(request: Request, t: Throwable): Error {
             if (t is ConnectException) {
-                return ErrorService(ErrorType.CannotReachServer)
+                return Error(ErrorType.CannotReachServer)
             } else if (t.cause is java.io.EOFException) {
-                return ErrorService(ErrorType.CannotReachServer)
+                return Error(ErrorType.CannotReachServer)
             } else if (t.cause is java.net.UnknownHostException) {
-                return ErrorService(ErrorType.CannotReachServer)
+                return Error(ErrorType.CannotReachServer)
             }
-            return ErrorService(ErrorType.Unknown, request = request)
+            return Error(ErrorType.Unknown, request = request)
         }
 
-        fun <T> from(request: Request, resp: Response<T>): ErrorService {
+        fun <T> from(request: Request, resp: Response<T>): Error {
             val raw = resp.raw()
             val code = HttpStatusCode(raw?.code() ?: 0)
             val errorType = when (code.description) {
@@ -36,7 +36,7 @@ class ErrorService(val errorType: ErrorType, val statusCode: HttpStatusCode = Ht
                 HttpStatusCode.Status.BadRequest -> ErrorType.BadRequest
                 else -> ErrorType.Unknown
             }
-            return ErrorService(errorType, code, raw?.body(), resp.errorBody()?.string(), request = request)
+            return Error(errorType, code, raw?.body(), resp.errorBody()?.string(), request = request)
         }
     }
 
@@ -48,7 +48,5 @@ class ErrorService(val errorType: ErrorType, val statusCode: HttpStatusCode = Ht
         TimeOut,
         Unauthorized,
         BadRequest,
-
-        ;
     }
 }

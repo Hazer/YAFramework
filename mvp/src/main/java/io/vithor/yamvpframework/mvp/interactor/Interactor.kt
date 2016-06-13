@@ -1,15 +1,15 @@
-package io.vithor.yamvpframework.interactor
+package io.vithor.yamvpframework.mvp.interactor
 
 /**
  * Created by Vithorio Polten on 2/22/16.
  */
 interface Interactor {
-    operator fun invoke(): Interactor.Event
+    operator fun invoke(): Event
 
 
     interface Executor {
         fun execute(interactor: Interactor,
-                    priority: Interactor.Priority = Interactor.Priority.LOW,
+                    priority: Priority = Priority.LOW,
                     requireNetwork: Boolean = true)
     }
 
@@ -28,8 +28,8 @@ interface Interactor {
     }
 
     class Wrapper(val interactor: Interactor,
-                         val priority: Interactor.Priority,
-                         val requireNetwork: Boolean = true) : Interactor.Job {
+                  val priority: Priority,
+                  val requireNetwork: Boolean = true) : Job {
 
         fun onRun() {
             val event = interactor.invoke()

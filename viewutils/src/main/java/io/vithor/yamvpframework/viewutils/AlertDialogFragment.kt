@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
-import io.vithor.yamvpframework.extensions.unwrap
+import io.vithor.yamvpframework.core.extensions.unwrap
 import org.jetbrains.anko.support.v4.withArguments
 
 class AlertDialogFragment: DialogFragment() {
@@ -37,12 +37,14 @@ class AlertDialogFragment: DialogFragment() {
         }
 
         fun dismissAlert(fragMan: FragmentManager) {
-            val tr = fragMan.beginTransaction()
-            val frag = fragMan.findFragmentByTag(FRAG_TAG)
-            frag.unwrap {
-                tr.remove(it)
+            if (!fragMan.isDestroyed) {
+                val frag = fragMan.findFragmentByTag(FRAG_TAG)
+                frag.unwrap {
+                    fragMan.beginTransaction()
+                            .remove(it)
+                            .commitAllowingStateLoss()
+                }
             }
-            tr.commitAllowingStateLoss()
         }
     }
 }

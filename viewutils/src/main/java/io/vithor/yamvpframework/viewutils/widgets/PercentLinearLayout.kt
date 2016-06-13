@@ -1,6 +1,5 @@
 package io.vithor.yamvpframework.viewutils.widgets
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.support.percent.PercentLayoutHelper

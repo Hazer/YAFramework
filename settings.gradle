@@ -1,7 +1,9 @@
-include ':core', ':viewutils',
+include ':core',
+        ':viewutils',
         ':extensions',
         ':mvp',
         ':permissions',
         ':validation',
         ':migration',
         ':rest'
+

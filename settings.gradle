@@ -1,6 +1,6 @@
 include ':core',
         ':viewutils',
-        ':extensions',
+        ':gson',
         ':mvp',
         ':permissions',
         ':validation',

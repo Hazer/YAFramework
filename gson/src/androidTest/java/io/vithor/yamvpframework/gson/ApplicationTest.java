@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.extensions;
+package io.vithor.yamvpframework.gson;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

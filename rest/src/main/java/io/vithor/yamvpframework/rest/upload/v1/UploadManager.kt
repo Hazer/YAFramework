@@ -124,7 +124,7 @@ class UploadManager(private val restClient: Retrofit, val maxAttempts: Int = 2, 
             get() = response is UploadClient.PhotoUploaded.Yes
 
         fun execute(): UploadClient.PhotoUploaded {
-            val upload = UploadClient.uploadDocs(uploadManager.restClient, fileToUpload,
+            val upload = UploadClient.uploadFile(uploadManager.restClient, fileToUpload, tag,
                     object : CountingRequestBody.Listener {
                         override fun onRequestProgress(bytesWritten: Long, contentLength: Long) {
                             val listener = uploadManager.jobListeners[tag]

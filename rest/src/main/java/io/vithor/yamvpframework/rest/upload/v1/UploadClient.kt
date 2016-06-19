@@ -14,8 +14,6 @@ import java.io.IOException
  * Created by Hazer on 6/7/16.
  */
 object UploadClient {
-    fun uploadDocs(retrofit: Retrofit, file: File, listener: CountingRequestBody.Listener? = null): PhotoUploaded = uploadFile(retrofit, file, "docs", listener)
-
     fun uploadFile(retrofit: Retrofit, file: File, type: String, listener: CountingRequestBody.Listener?): PhotoUploaded {
         val (body, description) = prepareFile(file, "hello, this is description speaking", listener)
 

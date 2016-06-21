@@ -13,11 +13,13 @@ import io.vithor.sentry.raven.Sentry
  * Created by Vithorio Polten on 2/23/16.
  */
 abstract class AbstractVersionManager protected constructor() {
+    companion object {
+        private val migrations = ArrayMap<Int, Migration>()
+    }
 
     /**
-
      * @param migrations Array of migrations to be executed for each app version.
-     * *
+     *
      * @throws IllegalStateException When migrations have duplicated version, if you need more than one migration per version, use Composition Pattern.
      */
     protected fun addMigrations(vararg migrations: Migration) {
@@ -35,12 +37,12 @@ abstract class AbstractVersionManager protected constructor() {
      * Get migration code for next migration step
 
      * @param version integer version code of the database
-     * *
+     *
      * @return Migration for version
-     * *
+     *
      * @throws IllegalStateException When there's a version missing migration step, all version upgrades must have a migration.
      */
-    @NonNull private fun getMigration(version: Int): Migration? {
+    private fun getMigration(version: Int): Migration {
         if (!migrations.containsKey(version)) {
             val ex = IllegalStateException("Missing migrations for version: " + version)
 
@@ -48,7 +50,7 @@ abstract class AbstractVersionManager protected constructor() {
 
             throw ex
         }
-        return migrations.get(version)
+        return migrations[version]!!
     }
 
     /**
@@ -66,24 +68,20 @@ abstract class AbstractVersionManager protected constructor() {
      * @throws IllegalStateException in case of inconsistency.
      */
     fun migrate(helper: SQLiteOpenHelper, connectionSource: ConnectionSource, oldVersion: Int, newVersion: Int) {
-        var oldVersion = oldVersion
-        while (oldVersion++ < newVersion) {
-            val m = getMigration(oldVersion)
+        var ov = oldVersion
+        while (ov++ < newVersion) {
+            val m = getMigration(ov)
             Log.d(javaClass.simpleName,
-                    "Running Migration V" + m?.version + "\nDesc: " +
-                            m?.description)
-            if (!(m?.doUpgrade(helper, connectionSource) ?: false)) {
+                    "Running Migration V" + m.version + "\nDesc: " +
+                            m.description)
+            if (!(m.doUpgrade(helper, connectionSource))) {
                 // Unsuccessful, stop migrations
 
-                val ex = IllegalStateException("Failed migrating database from version: $oldVersion to version: $newVersion")
+                val ex = IllegalStateException("Failed migrating database from version: $ov to version: $newVersion")
 
                 Sentry.INSTANCE.captureException(ex)
                 throw ex
             }
         }
-    }
-
-    companion object {
-        private val migrations = ArrayMap<Int, Migration>()
     }
 }

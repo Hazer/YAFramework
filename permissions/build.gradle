@@ -38,7 +38,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile project(':core')
+    testCompile 'junit:junit:4.12'
+    testCompile "com.winterbe:expekt:0.4.0"
+    testCompile 'com.nhaarman:mockito-kotlin:0.5.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     compile('com.github.afollestad:assent:0.2.2') {

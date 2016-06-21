@@ -1,9 +1,6 @@
 package io.vithor.yamvpframework.migration
 
-import android.database.SQLException
 import android.database.sqlite.SQLiteOpenHelper
-import android.support.annotation.NonNull
-
 import com.j256.ormlite.support.ConnectionSource
 
 /**

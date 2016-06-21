@@ -10,7 +10,7 @@ package io.vithor.yamvpframework.core.extensions
  *
  * @return itself
  */
-fun <T> T?.unwrap(action: (T) -> Unit): T? {
+inline fun <reified T> T?.unwrap(action: (T) -> Unit): T? {
     if (this != null) {
         action.invoke(this)
     }
@@ -23,7 +23,7 @@ fun <T> T?.unwrap(action: (T) -> Unit): T? {
  *
  * @return itself
  */
-fun <T> T?.whenNull(action: () -> Unit): T? {
+inline fun <reified T> T?.whenNull(action: () -> Unit): T? {
     if (this == null) {
         action.invoke()
     }

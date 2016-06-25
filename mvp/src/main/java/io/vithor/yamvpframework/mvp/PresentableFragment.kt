@@ -3,6 +3,7 @@ package io.vithor.yamvpframework.mvp
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.view.View
+import io.vithor.yamvpframework.core.extensions.whenNull
 import io.vithor.yamvpframework.mvp.presenter.BasePresenter
 import io.vithor.yamvpframework.mvp.presenter.Presentable
 import io.vithor.yamvpframework.mvp.presenter.TagPresenter
@@ -20,10 +21,8 @@ abstract class PresentableFragment<P : TagPresenter<SK>, SK : Sketch> : BaseFrag
 
     private var presenterClass: Class<P>? = null
         get() {
-            if (field == null) {
-                field = Class.forName(presenterClassString) as Class<P>?
-            }
-            return field
+            @Suppress("UNCHECKED_CAST")
+            return field ?: Class.forName(presenterClassString) as Class<P>?
         }
 
     private val presenterClassString: String by lazy { createPresenterClassString() }
@@ -36,7 +35,7 @@ abstract class PresentableFragment<P : TagPresenter<SK>, SK : Sketch> : BaseFrag
     open protected val presenterTag: String by lazy { presenterClassString }
 
     override final fun createPresenter(): P {
-        var inst: P? = BasePresenter.getActiveInstance<P, SK>(tag=presenterTag)
+        var inst: P? = BasePresenter.getActiveInstance<P, SK>(tag = presenterTag)
         inst = inst ?: presenterClass?.getConstructor(String::class.java)?.newInstance(presenterTag)
         return inst ?: throw IllegalStateException("Class ${presenterClassString} must have a public no-args constructor.")
     }
@@ -46,7 +45,7 @@ abstract class PresentableFragment<P : TagPresenter<SK>, SK : Sketch> : BaseFrag
     }
 
     override final fun createPresenter(presentable: Presentable<*, *>?): P {
-        val presenter = createPresenter()
+        val presenter = super.createPresenter(presentable)
         presenter.parent = presentable?.activePresenter()
         return presenter
     }
@@ -57,6 +56,7 @@ abstract class PresentableFragment<P : TagPresenter<SK>, SK : Sketch> : BaseFrag
         if (presenter == null) {
             presenter = createPresenter()
         }
+        @Suppress("UNCHECKED_CAST")
         val sketchView = this as? SK ?: throw IllegalStateException("${javaClass.simpleName} must implement ${ (presenterClass?.genericSuperclass as? ParameterizedType)?.actualTypeArguments!![0]}")
         presenter?.attachView(sketchView)
     }

@@ -1,7 +1,7 @@
 buildscript {
     repositories { jcenter() }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${rootProject.ext.kotlin_version}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 apply plugin: 'com.android.library'
@@ -31,9 +31,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
 }
 
 dependencies {
@@ -43,14 +40,25 @@ dependencies {
     testCompile 'com.nhaarman:mockito-kotlin:0.5.0'
 
     compile project(':core')
-    compile project(':ui')
+    compile project(':permissions')
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    compile "com.android.support:appcompat-v7:${libraries.supportVersion}"
+    compile "com.android.support:support-v4:${libraries.supportVersion}"
+    javadocDeps "com.android.support:support-v4:${libraries.supportVersion}"
+    compile "com.android.support:percent:${libraries.supportVersion}"
+    compile "com.android.support:support-annotations:${libraries.supportVersion}"
+    javadocDeps "com.android.support:support-annotations:${libraries.supportVersion}"
+
+    compile "org.jetbrains.anko:anko-sdk23:${libraries.ankoVersion}"
+    compile "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
+    compile "org.jetbrains.anko:anko-appcompat-v7:${libraries.ankoVersion}"
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 
     compile 'de.halfbit:tinybus:3.0.2'
     compile 'de.halfbit:tinybus-extensions:3.0.2'
-
 }
 
 apply from: new File("${rootProject.projectDir}/publish.gradle")

@@ -2,12 +2,10 @@ package io.vithor.yamvpframework.rest.api.gson
 
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
-
-import java.io.IOException
-import java.lang.reflect.Type
-
 import okhttp3.ResponseBody
 import retrofit2.Converter
+import java.io.IOException
+import java.lang.reflect.Type
 
 /**
  * This wrapper is to take care of this case:

@@ -3,11 +3,11 @@ package io.vithor.yamvpframework.mvp
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.view.View
-import io.vithor.yamvpframework.BaseFragment
 import io.vithor.yamvpframework.mvp.presenter.BasePresenter
 import io.vithor.yamvpframework.mvp.presenter.Presentable
 import io.vithor.yamvpframework.mvp.presenter.TagPresenter
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
+import io.vithor.yamvpframework.ui.BaseFragment
 import java.lang.reflect.ParameterizedType
 
 /**

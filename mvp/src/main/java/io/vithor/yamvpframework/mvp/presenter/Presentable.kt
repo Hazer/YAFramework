@@ -1,6 +1,5 @@
 package io.vithor.yamvpframework.mvp.presenter
 
-import android.app.Activity
 import android.support.annotation.CallSuper
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 

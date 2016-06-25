@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework
+package io.vithor.yamvpframework.core
 
 import io.vithor.yamvpframework.core.extensions.debugLog
 import java.io.File

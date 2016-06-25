@@ -1,12 +1,9 @@
 package io.vithor.yamvpframework.migration
 
 import android.database.sqlite.SQLiteOpenHelper
-import android.support.annotation.NonNull
 import android.support.v4.util.ArrayMap
 import android.util.Log
-
 import com.j256.ormlite.support.ConnectionSource
-
 import io.vithor.sentry.raven.Sentry
 
 /**

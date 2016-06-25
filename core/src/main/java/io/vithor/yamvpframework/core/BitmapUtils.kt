@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework
+package io.vithor.yamvpframework.core
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -10,7 +10,6 @@ import android.util.Base64
 import android.util.Base64InputStream
 import android.util.TypedValue
 import android.view.WindowManager
-import io.vithor.yamvpframework.core.YAIOUtils
 import io.vithor.yamvpframework.core.extensions.debugLog
 import java.io.*
 import java.nio.ByteBuffer

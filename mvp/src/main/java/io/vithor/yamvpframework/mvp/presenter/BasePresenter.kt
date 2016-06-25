@@ -3,10 +3,10 @@ package io.vithor.yamvpframework.mvp.presenter
 import android.content.Context
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
+import io.vithor.yamvpframework.core.extensions.debugLog
 import io.vithor.yamvpframework.mvp.ErrorContainer
 import io.vithor.yamvpframework.mvp.RepositoryCallback
 import io.vithor.yamvpframework.mvp.ResponseContainer
-import io.vithor.yamvpframework.core.extensions.debugLog
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import java.lang.ref.WeakReference
 import kotlin.reflect.KClass

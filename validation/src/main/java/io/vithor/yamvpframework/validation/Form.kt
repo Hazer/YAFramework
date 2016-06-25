@@ -1,9 +1,7 @@
 package io.vithor.yamvpframework.validation
 
-import android.view.View
 import android.widget.EditText
 import org.jetbrains.anko.async
-import java.util.*
 
 /**
  * Created by Vithorio Polten on 2/16/16.

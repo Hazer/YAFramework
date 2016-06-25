@@ -1,10 +1,8 @@
 package io.vithor.yamvpframework.rest.api
 
-import java.io.IOException
-
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
+import java.io.IOException
 
 /**
  * Created by Hazer on 3/30/16.

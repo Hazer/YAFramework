@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework
+package io.vithor.yamvpframework.permissions
 
 import android.app.Activity
 import android.os.Build

@@ -1,7 +1,6 @@
 package io.vithor.yamvpframework.rest.api.gson
 
 import com.google.gson.Gson
-import io.vithor.yamvpframework.rest.api.gson.GsonResponseBodyConverterToString
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter

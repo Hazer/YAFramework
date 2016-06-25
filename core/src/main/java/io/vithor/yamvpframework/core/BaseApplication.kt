@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework
+package io.vithor.yamvpframework.core
 
 import android.support.multidex.MultiDexApplication
 import de.halfbit.tinybus.TinyBus

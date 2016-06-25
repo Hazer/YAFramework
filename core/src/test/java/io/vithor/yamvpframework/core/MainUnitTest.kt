@@ -1,10 +1,7 @@
 package io.vithor.yamvpframework.core
 
-import com.nhaarman.mockito_kotlin.mock
+import com.winterbe.expekt.should
 import org.junit.Test
-
-import org.junit.Assert.*
-import com.winterbe.expekt.*
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.

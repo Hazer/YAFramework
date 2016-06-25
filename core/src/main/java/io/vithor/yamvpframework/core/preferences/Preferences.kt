@@ -1,11 +1,11 @@
-package io.vithor.yamvpframework.preferences
+package io.vithor.yamvpframework.core.preferences
 
 /**
  * Created by Vithorio Polten on 2/15/16.
  */
 import android.content.Context
-import android.preference.PreferenceManager
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 
 private val defaultInit: Any.() -> Unit = {}
 

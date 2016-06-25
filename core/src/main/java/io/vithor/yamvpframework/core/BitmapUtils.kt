@@ -17,7 +17,7 @@ import java.nio.ByteBuffer
 /**
  * Created by Vithorio Polten on 1/4/16.
  */
-public object BitmapUtils {
+object BitmapUtils {
 
     fun pxToDip(context: Context, px: Float): Float {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, context.resources.displayMetrics)
@@ -107,10 +107,10 @@ public object BitmapUtils {
 
         if (width > height) {
             // landscape
-            return BitmapUtils.scaleToFitHeight(b, maxSize)
+            return scaleToFitHeight(b, maxSize)
         } else if (height > width) {
             // portrait
-            return BitmapUtils.scaleToFitWidth(b, maxSize)
+            return scaleToFitWidth(b, maxSize)
         }
         return b
     }
@@ -147,7 +147,7 @@ public object BitmapUtils {
 
     @Throws(FileNotFoundException::class)
     fun decodeAndResize(context: Context, imageFile: File, newFile: File, imageMaxSize: Int): File? {
-        var b: Bitmap?
+        val b: Bitmap?
 
         //Decode image size
         val o = BitmapFactory.Options()
@@ -168,7 +168,7 @@ public object BitmapUtils {
             inputStream = context.contentResolver.openInputStream(Uri.fromFile(imageFile))
             b = BitmapFactory.decodeStream(inputStream, null, o2)
 
-            b.debugLog { "Bitmap Size: " + b!!.width + "x" + b!!.height }
+            b.debugLog { "Bitmap Size: " + b!!.width + "x" + b.height }
 
             val os: OutputStream
 

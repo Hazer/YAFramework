@@ -7,11 +7,11 @@ interface RepositoryCallback<T, R, E : Throwable> {
     /**
      * Successful HTTP response.
 
-     * @param t Response Body Deserialized
+     * @param model Response Body Deserialized
      * *
      * @param response ResponseContainer
      */
-    fun success(t: T, response: ResponseContainer<R>)
+    fun success(model: T, response: ResponseContainer<R>)
 
     /**
      * Unsuccessful HTTP response due to network failure, non-2XX status code, or unexpected

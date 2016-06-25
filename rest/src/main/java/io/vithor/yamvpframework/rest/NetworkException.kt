@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework.core
+package io.vithor.yamvpframework.rest
 
 /**
  * Created by Vithorio Polten on 4/20/15.

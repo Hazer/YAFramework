@@ -81,27 +81,6 @@ object YAIOUtils {
     // NOTE: This class is focussed on InputStream, OutputStream, Reader and
     // Writer. Each method should take at least one of these as a parameter,
     // or return one of them.
-
-    /**
-     * The Unix directory separator character.
-     */
-    val DIR_SEPARATOR_UNIX = '/'
-    /**
-     * The Windows directory separator character.
-     */
-    val DIR_SEPARATOR_WINDOWS = '\\'
-    /**
-     * The system directory separator character.
-     */
-    val DIR_SEPARATOR = File.separatorChar
-    /**
-     * The Unix line separator string.
-     */
-    val LINE_SEPARATOR_UNIX = "\n"
-    /**
-     * The Windows line separator string.
-     */
-    val LINE_SEPARATOR_WINDOWS = "\r\n"
     /**
      * The system line separator string.
      */
@@ -166,8 +145,8 @@ object YAIOUtils {
         val inStream = FileInputStream(src)
         val outStream = FileOutputStream(dst)
         try {
-            val inChannel = inStream.getChannel()
-            val outChannel = outStream.getChannel()
+            val inChannel = inStream.channel
+            val outChannel = outStream.channel
             return inChannel.transferTo(0, inChannel.size(), outChannel)
         } finally {
             inStream.close()

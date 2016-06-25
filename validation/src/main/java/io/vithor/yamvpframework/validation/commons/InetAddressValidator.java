@@ -102,7 +102,7 @@ public class InetAddressValidator implements Serializable {
                 return false;
             }
 
-            int iIpSegment = 0;
+            int iIpSegment;
 
             try {
                 iIpSegment = Integer.parseInt(ipSegment);
@@ -156,7 +156,7 @@ public class InetAddressValidator implements Serializable {
         int validOctets = 0;
         int emptyOctets = 0;
         for (int index = 0; index < octets.length; index++) {
-            String octet = (String) octets[index];
+            String octet = octets[index];
             if (octet.length() == 0) {
                 emptyOctets++;
                 if (emptyOctets > 1) {
@@ -181,7 +181,7 @@ public class InetAddressValidator implements Serializable {
                 if (octet.length() > IPV6_MAX_HEX_DIGITS_PER_GROUP) {
                     return false;
                 }
-                int octetInt = 0;
+                int octetInt;
                 try {
                     octetInt = Integer.valueOf(octet, BASE_16).intValue();
                 } catch (NumberFormatException e) {
@@ -193,9 +193,6 @@ public class InetAddressValidator implements Serializable {
             }
             validOctets++;
         }
-        if (validOctets < IPV6_MAX_HEX_GROUPS && !containsCompressedZeroes) {
-            return false;
-        }
-        return true;
+        return !(validOctets < IPV6_MAX_HEX_GROUPS && !containsCompressedZeroes);
     }
 }

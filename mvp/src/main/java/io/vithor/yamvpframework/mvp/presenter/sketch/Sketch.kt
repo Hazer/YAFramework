@@ -1,6 +1,7 @@
 package io.vithor.yamvpframework.mvp.presenter.sketch
 
 import android.support.annotation.MainThread
+import io.vithor.yamvpframework.mvp.presenter.Presenter
 
 import io.vithor.yamvpframework.mvp.presenter.PresenterAction
 
@@ -8,7 +9,7 @@ import io.vithor.yamvpframework.mvp.presenter.PresenterAction
  * Created by Vithorio Polten on 1/8/16.
  */
 @MainThread
-interface Sketch {
+interface Sketch : Presenter.Contract.View {
     /**
      * Display a loading view while loading data in background.
      * **The loading view must have the id = R.id.loadingView**

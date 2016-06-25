@@ -6,7 +6,7 @@ import io.vithor.yamvpframework.mvp.presenter.sketch.TypedSketch
 /**
  * Created by Vithorio Polten on 5/5/15.
  */
-abstract class SimplePresenter<ModelType, SK : TypedSketch<ModelType>, ResponseType> : BasePresenter<SK>() {
+abstract class SimpleSingletonPresenter<ModelType, SK : TypedSketch<ModelType>, ResponseType> : SingletonPresenter<SK>() {
 
     override fun onViewAttached() {
         loadData(PresenterAction.INITIAL_LOAD)
@@ -24,6 +24,7 @@ abstract class SimplePresenter<ModelType, SK : TypedSketch<ModelType>, ResponseT
 
     protected fun showLoading(action: PresenterAction) {
         view?.showLoading(action)
+
     }
 
     protected fun successHandler(action: PresenterAction, model: ModelType, rawResponse: ResponseContainer<ResponseType>) {

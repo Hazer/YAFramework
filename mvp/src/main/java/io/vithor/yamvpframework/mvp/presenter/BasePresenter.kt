@@ -15,8 +15,22 @@ import kotlin.reflect.KClass
  * Created by Vithorio Polten on 1/8/16.
  */
 abstract class BasePresenter<SK : Sketch> : Presenter {
+    companion object {
+        fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(type: KClass<P>?): P? {
+            @Suppress("UNCHECKED_CAST")
+            return PresenterBucket.Singletons.getRetainedInstance(type as KClass<out BasePresenter<out Sketch>>) as? P
+        }
+
+        fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(tag: String): P? {
+            @Suppress("UNCHECKED_CAST")
+            return PresenterBucket.getRetainedInstance(tag) as? P
+        }
+    }
+
     private var viewWeak: WeakReference<SK>? = null
-    internal var shouldLoadData = true
+
+    var shouldLoadData = true
+        protected set
 
     var parent: BasePresenter<*>? = null
 
@@ -25,12 +39,11 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
 
     val context: Context?
         get() {
-            if (view is Context) {
-                return view as? Context
-            } else if (view is Fragment) {
-                return (view as? Fragment)?.activity
+            return when (view) {
+                is Context -> view as? Context
+                is Fragment -> (view as? Fragment)?.activity
+                else -> null
             }
-            return null
         }
 
     /**
@@ -41,15 +54,16 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
 
     protected abstract fun onViewAttached()
 
-    @CallSuper
-    fun attachView(view: SK) {
-        debugLog("View Attached")
+    final fun attachView(view: SK) {
         this.viewWeak = WeakReference(view)
+        debugLog("View Attached")
         onViewAttached()
     }
 
-    @Throws(ViewDetachedException::class)
-    abstract fun handleRestFailure(error: ErrorContainer<Throwable>, action: PresenterAction)
+    @CallSuper
+    open fun onRestFailure(error: ErrorContainer<Throwable>, action: PresenterAction) {
+
+    }
 
     /**
      * Will be called if the viewWeak has been destroyed. Typically this method will be invoked from
@@ -63,7 +77,7 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
 
     /**
      * Called in {onDestroy()} to remove this presenter from in-memory persistence.
-
+     *
      */
     @CallSuper
     open fun onDestroy() {
@@ -71,72 +85,23 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
     }
 
     open fun beforeAttachView() {
+
     }
 
-    companion object {
-        fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(type: KClass<P>?): P? {
-            return PresenterBucket.Singletons.getRetainedInstance(type as KClass<out BasePresenter<out Sketch>>) as? P
+    abstract class Callback<T, RT>(private val presenter: BasePresenter<*>, private val action: PresenterAction) : RepositoryCallback<T, RT, Throwable> {
+
+        override fun success(model: T, response: ResponseContainer<RT>) {
+            presenter.shouldLoadData = true
+            success(model, response, action)
         }
 
-        fun <P : BasePresenter<SK>, SK : Sketch> getActiveInstance(tag: String): P? {
-            return PresenterBucket.getRetainedInstance(tag) as? P
-        }
-    }
-}
+        abstract fun success(model: T, response: ResponseContainer<RT>, action: PresenterAction)
 
-abstract class PresenterCallback<T, RT>(private val presenter: BasePresenter<*>, private val action: PresenterAction) : RepositoryCallback<T, RT, Throwable> {
-
-    override fun success(t: T, response: ResponseContainer<RT>) {
-        presenter.shouldLoadData = true
-//        try {
-            success(t, response, action)
-//        } catch (ignore: ViewDetachedException) {
-//        }
-    }
-
-//    @Throws(ViewDetachedException::class)
-    abstract fun success(t: T, response: ResponseContainer<RT>, action: PresenterAction)
-
-    override fun failure(error: ErrorContainer<Throwable>) {
-        presenter.shouldLoadData = true
-        try {
-            presenter.handleRestFailure(error, action)
-        } catch (ignore: ViewDetachedException) {
+        override fun failure(error: ErrorContainer<Throwable>) {
+            presenter.shouldLoadData = true
+            presenter.onRestFailure(error, action)
         }
     }
 }
 
 
-abstract class TagPresenter<SK : Sketch>(val tag: String) : BasePresenter<SK>() {
-    init {
-        debugLog("Presenter Generated")
-        PresenterBucket.add(tag, this)
-    }
-
-    /**
-     * Called in {onDestroy()} to remove this presenter from in-memory persistence.
-     */
-    @CallSuper
-    override fun onDestroy() {
-        super.onDestroy()
-        debugLog("Releasing Presenter")
-        PresenterBucket.release(tag)
-    }
-}
-
-abstract class SingletonPresenter<SK : Sketch> : BasePresenter<SK>() {
-    init {
-        debugLog("Presenter Generated")
-        PresenterBucket.Singletons.add(this)
-    }
-
-    /**
-     * Called in {onDestroy()} to remove this presenter from in-memory persistence.
-     */
-    @CallSuper
-    override fun onDestroy() {
-        super.onDestroy()
-        debugLog("Releasing Presenter")
-        PresenterBucket.Singletons.release(this.javaClass.kotlin)
-    }
-}

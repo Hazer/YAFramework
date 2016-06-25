@@ -1,6 +1,7 @@
 package io.vithor.yamvpframework.core.extensions
 
 import android.util.Log
+import io.vithor.yamvpframework.core.YafConfig
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -159,20 +160,8 @@ private fun formatMessage(message: String?): List<String> {
 
 fun debugBuildOnly(lambda: () -> Unit) {
 //    lambda.invoke()
-    if (LogConfig.DEBUG) {
+    if (YafConfig.DEBUG) {
         lambda.invoke()
-    }
-}
-
-/**
- * Workaround for BuildConfig.DEBUG always be False in Libraries.
- */
-object LogConfig {
-    var DEBUG = false
-        private set
-
-    fun init(debug: Boolean) {
-        this.DEBUG = debug
     }
 }
 

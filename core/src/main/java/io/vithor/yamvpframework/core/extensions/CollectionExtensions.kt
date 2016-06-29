@@ -4,6 +4,12 @@ package io.vithor.yamvpframework.core.extensions
  * Created by Hazer on 4/8/16.
  */
 
+inline fun <reified T> listFromLists(vararg lists: List<T>): List<T> {
+    return lists.fold(mutableListOf<T>()) { mainList, list ->
+        mainList.apply { addAll(list) }
+    }
+}
+
 /**
  * Tries to cast this as? MutableList
  *

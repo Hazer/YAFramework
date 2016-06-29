@@ -42,6 +42,7 @@ abstract class BaseActivity : AppCompatActivity() /*, PermissionDelegate*/ {
 
     @CallSuper
     override fun onDestroy() {
+        super.onDestroy()
         //        Assent.setActivity(this, null)
     }
 

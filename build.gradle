@@ -1,15 +1,20 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 ext {
     libraries = [
-            supportVersion     : "23.4.0",
+            supportVersion     : "24.0.0",
             ankoVersion        : "0.8.3",
     ]
     GROUP = "com.guizion.frameworks.yaf"
-    VERSION_NAME = "0.0.8"
+    VERSION_NAME = "1.0.0-alpha1"
 }
 
 buildscript {
     ext.kotlin_version = '1.0.2-1'
+    ext.build_tools_version = '24.0.0'
+    ext.compile_sdk_version = 24
+    ext.min_sdk_version = 15
+    ext.target_sdk_version = 24
+
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }

@@ -16,12 +16,12 @@ kapt {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion $compile_sdk_version
+    buildToolsVersion "$build_tools_version"
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion $min_sdk_version
+        targetSdkVersion $target_sdk_version
         versionCode 1
         versionName "1.0"
     }

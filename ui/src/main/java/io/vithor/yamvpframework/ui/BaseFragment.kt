@@ -2,16 +2,18 @@ package io.vithor.yamvpframework.ui
 
 import android.os.Bundle
 import android.support.annotation.CallSuper
+import android.support.v13.app.FragmentCompat
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.afollestad.assent.Assent
 import de.halfbit.tinybus.TinyBus
 
 /**
  * Created by Vithorio Polten on 12/22/15.
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment(), FragmentCompat.OnRequestPermissionsResultCallback {
     private val mBus: TinyBus by lazy { TinyBus.from(context.applicationContext) }
 
     var isFirstLaunch: Boolean = false
@@ -30,7 +32,7 @@ abstract class BaseFragment : Fragment() {
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //        Assent.setFragment(this, this)
+        Assent.setFragment(this, this)
     }
 
     @CallSuper
@@ -39,9 +41,10 @@ abstract class BaseFragment : Fragment() {
         super.onSaveInstanceState(outState)
     }
 
-    //    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    //        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    //        Assent.handleResult(permissions, grantResults)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Assent.handleResult(permissions, grantResults)
+    }
 
     /**
      * Be careful, this method is sometimes called before onCreateView when inside ViewPager
@@ -89,14 +92,16 @@ abstract class BaseFragment : Fragment() {
     @CallSuper
     override fun onResume() {
         super.onResume()
-        //        Assent.setFragment(this, this)
+        Assent.setFragment(this, this)
     }
 
     @CallSuper
     override fun onPause() {
         super.onPause()
-        //        if (activity != null && activity.isFinishing)
-        //            Assent.setFragment(this, null)
+
+        if (isFinishing) {
+            Assent.setFragment(this, null)
+        }
     }
 
     @CallSuper

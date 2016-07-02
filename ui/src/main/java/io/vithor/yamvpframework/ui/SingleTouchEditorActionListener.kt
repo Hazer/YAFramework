@@ -1,4 +1,4 @@
-package io.vithor.yamvpframework
+package io.vithor.yamvpframework.ui
 
 import android.view.KeyEvent
 import android.view.View

@@ -27,6 +27,13 @@ fun <T> Array<T>.enumerated(): List<Pair<Int, T>> {
 }
 
 /**
+ * @return A list with pairs of Index, Value.
+ */
+fun <T> Collection<T>.enumerated(): List<Pair<Int, T>> {
+    return indices.zip(this)
+}
+
+/**
  * Execute {action} for each item of the collection, case {count} > 1.
  * @param action Receives {item} from collection at {index}.
  *

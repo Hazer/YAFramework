@@ -5,11 +5,11 @@ ext {
             ankoVersion        : "0.8.3",
     ]
     GROUP = "com.guizion.frameworks.yaf"
-    VERSION_NAME = "1.0.0-alpha1"
+    VERSION_NAME = "1.0.0-alpha2"
 }
 
 buildscript {
-    ext.kotlin_version = '1.0.2-1'
+    ext.kotlin_version = '1.0.3'
     ext.build_tools_version = '24.0.0'
     ext.compile_sdk_version = 24
     ext.min_sdk_version = 15

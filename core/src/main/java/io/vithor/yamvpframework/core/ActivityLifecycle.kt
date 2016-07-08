@@ -1,9 +1,9 @@
-package io.vithor.yamvpframework.ui
+package io.vithor.yamvpframework.core
 
 /**
  * Created by Hazer on 4/11/16.
  */
-enum class ActivityLifecycle {
+enum class ActivityLifecycleEvent {
     None,
     Started,
     Stopped,

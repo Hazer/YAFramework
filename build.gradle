@@ -5,7 +5,7 @@ ext {
             ankoVersion        : "0.8.3",
     ]
     GROUP = "com.guizion.frameworks.yaf"
-    VERSION_NAME = "1.0.0-alpha3"
+    VERSION_NAME = "1.0.0-alpha4"
 }
 
 buildscript {
@@ -21,7 +21,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha4'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.8"
 
         // NOTE: Do not place your application dependencies here; they belong

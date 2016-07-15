@@ -48,7 +48,7 @@ dependencies {
     compile "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
     compile "org.jetbrains.anko:anko-appcompat-v7:${libraries.ankoVersion}"
 
-    compile "com.google.code.gson:gson:2.6.2"
+    compile "com.google.code.gson:gson:2.7"
 
     //javadocDeps "com.android.support:support-v4:${libraries.supportVersion}"
 }

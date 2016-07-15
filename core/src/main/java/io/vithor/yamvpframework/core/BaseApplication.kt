@@ -10,7 +10,7 @@ import de.halfbit.tinybus.TinyBus
 /**
  * Created by Vithorio Polten on 12/31/15.
  */
-open class BaseApplication : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
+abstract class BaseApplication : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
     val bus: TinyBus by lazy { TinyBus.from(this) }
 
     /*
@@ -32,40 +32,74 @@ open class BaseApplication : MultiDexApplication(), Application.ActivityLifecycl
 
     override fun onCreate() {
         super.onCreate()
-        activityState = ActivityLifecycleEvent.None
         bus.register(this)
     }
 
+    open protected fun onBecameForeground() {
+
+    }
+
+    open protected fun onBecameBackground() {
+
+    }
+
+    open protected fun onActivityState(activity: Activity?, state: ActivityLifecycleEvent) {
+
+    }
+
     override fun onActivityStarted(activity: Activity?) {
-        activityState = ActivityLifecycleEvent.Started
+        activitiesStarted += 1
+        if (activitiesStarted == 1) {
+            state = State.Foreground
+            onBecameForeground()
+        }
+
+        onActivityState(activity, ActivityLifecycleEvent.Started)
     }
 
     override fun onActivityStopped(activity: Activity?) {
-        activityState = ActivityLifecycleEvent.Stopped
+        activitiesStarted -= 1
+        if (activitiesStarted == 0) {
+            state = State.Background
+            onBecameBackground()
+        }
+
+        onActivityState(activity, ActivityLifecycleEvent.Stopped)
     }
 
     override fun onActivityResumed(activity: Activity?) {
-        activityState = ActivityLifecycleEvent.Resumed
+        onActivityState(activity, ActivityLifecycleEvent.Resumed)
     }
 
     override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
-        activityState = ActivityLifecycleEvent.SaveInstanceState
+        onActivityState(activity, ActivityLifecycleEvent.SaveInstanceState)
     }
 
     override fun onActivityDestroyed(activity: Activity?) {
-        activityState = ActivityLifecycleEvent.Destroyed
+        onActivityState(activity, ActivityLifecycleEvent.Destroyed)
     }
 
     override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
-        activityState = ActivityLifecycleEvent.Created
+        onActivityState(activity, ActivityLifecycleEvent.Created)
     }
 
     override fun onActivityPaused(activity: Activity?) {
-        activityState = ActivityLifecycleEvent.Paused
+        onActivityState(activity, ActivityLifecycleEvent.Paused)
     }
 
     companion object {
-        var activityState = ActivityLifecycleEvent.None
+        internal var activitiesStarted = 0
             private set
+
+        @JvmStatic val isOnBackground: Boolean
+            get() = activitiesStarted == 0
+
+        @JvmStatic var state = State.Background
+            private set
+    }
+
+    enum class State {
+        Foreground,
+        Background
     }
 }

@@ -15,7 +15,6 @@ class PercentLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(
     private val mPercentLayoutHelper: PercentLayoutHelper
 
     init {
-
         mPercentLayoutHelper = PercentLayoutHelper(this)
     }
 
@@ -36,7 +35,6 @@ class PercentLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(
         return LayoutParams(context, attrs)
     }
 
-
     class LayoutParams : LinearLayout.LayoutParams, PercentLayoutHelper.PercentLayoutParams {
         var percentInfo: PercentLayoutHelper.PercentLayoutInfo? = null
 
@@ -51,7 +49,6 @@ class PercentLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(
         constructor(width: Int, height: Int) : super(width, height) {
         }
 
-
         constructor(source: ViewGroup.LayoutParams) : super(source) {
         }
 
@@ -59,7 +56,7 @@ class PercentLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(
         }
 
         override fun getPercentLayoutInfo(): PercentLayoutHelper.PercentLayoutInfo? {
-            return percentLayoutInfo
+            return percentInfo
         }
     }
 

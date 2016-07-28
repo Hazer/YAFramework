@@ -48,11 +48,11 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     compile project(':core')
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.google.code.gson:gson:2.6.2'
+    compile project(':gson')
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 
-    compile 'com.github.mrmike:ok2curl:0.2.3'
+    compile 'com.github.mrmike:ok2curl:0.2.5'
 }
 
 apply from: new File("${rootProject.projectDir}/publish.gradle")

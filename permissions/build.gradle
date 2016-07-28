@@ -43,7 +43,7 @@ dependencies {
     testCompile 'com.nhaarman:mockito-kotlin:0.5.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    compile('com.github.afollestad:assent:0.2.4') {
+    compile('com.afollestad:assent:0.2.4') {
         transitive = true
     }
     compile "com.android.support:support-v4:${libraries.supportVersion}"

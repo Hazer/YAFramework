@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, vararg var providedInterceptors: Interceptor) {
+class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, vararg var providedInterceptors: Interceptor?) {
 
     var apiAuthorizations: MutableMap<String, Interceptor>? = null
         get() = apiAuthorizations
@@ -52,7 +52,9 @@ class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, varar
 //        okBuilder.addInterceptor(GzipInterceptor()) // TODO: Find another way to gzip, not working
 
         for (interceptor in providedInterceptors) {
-            okBuilder.addInterceptor(interceptor)
+            if (interceptor != null) {
+                okBuilder.addInterceptor(interceptor)
+            }
         }
 
 //        if (BuildConfig.DEBUG) {

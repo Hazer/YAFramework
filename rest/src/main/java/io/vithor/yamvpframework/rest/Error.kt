@@ -14,7 +14,7 @@ import retrofit2.Response
 /**
  * Created by Vithorio Polten on 1/4/16.
  */
-class Error(val errorType: ErrorType, val statusCode: HttpStatusCode = HttpStatusCode(0), val responseBody: ResponseBody? = null, val errorBody: String? = null, val request: Request? = null) {
+data class Error(val errorType: ErrorType, val statusCode: HttpStatusCode = HttpStatusCode(0), val responseBody: ResponseBody? = null, val errorBody: String? = null, val request: Request? = null) {
 
     object Factory {
         /**

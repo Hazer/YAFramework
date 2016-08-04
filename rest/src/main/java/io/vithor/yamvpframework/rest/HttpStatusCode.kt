@@ -6,6 +6,7 @@ package io.vithor.yamvpframework.rest
 
 class HttpStatusCode(val statusCode: Int = 0) {
     enum class Status {
+        Unknown,
         None,
         Continue,
         SwitchingProtocols,
@@ -70,9 +71,10 @@ class HttpStatusCode(val statusCode: Int = 0) {
         NetworkAuthenticationRequired,
         NetworkConnectTimeoutError
     }
-    val description: Status?
+
+    val description: Status
         get() {
-            return Description.statusCodes[statusCode]
+            return Description.statusCodes[statusCode] ?: Status.Unknown
         }
 
     fun statusCodeFor(description: String): Int? {

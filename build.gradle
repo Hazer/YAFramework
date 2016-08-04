@@ -6,7 +6,7 @@ ext {
     ]
     GROUP = "com.guizion.frameworks.yaf"
 //    GROUP = "io.vithor.frameworks.yaf"
-    VERSION_NAME = "1.0.0-alpha6"
+    VERSION_NAME = "1.0.0-alpha8"
 }
 
 buildscript {

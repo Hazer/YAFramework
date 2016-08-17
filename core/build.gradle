@@ -1,13 +1,6 @@
-buildscript {
-    repositories { jcenter() }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
-apply plugin: 'org.jetbrains.dokka-android'
 
 kapt {
     generateStubs = true

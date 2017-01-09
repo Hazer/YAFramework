@@ -38,10 +38,10 @@ class PercentLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(
 
 
     class LayoutParams : LinearLayout.LayoutParams, PercentLayoutHelper.PercentLayoutParams {
-        var percentInfo: PercentLayoutHelper.PercentLayoutInfo? = null
+        var _percentInfo: PercentLayoutHelper.PercentLayoutInfo? = null
 
         constructor(c: Context, attrs: AttributeSet) : super(c, attrs) {
-            percentInfo = PercentLayoutHelper.getPercentLayoutInfo(c, attrs)
+            _percentInfo = PercentLayoutHelper.getPercentLayoutInfo(c, attrs)
         }
 
         override fun setBaseAttributes(a: TypedArray, widthAttr: Int, heightAttr: Int) {
@@ -59,7 +59,7 @@ class PercentLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(
         }
 
         override fun getPercentLayoutInfo(): PercentLayoutHelper.PercentLayoutInfo? {
-            return percentLayoutInfo
+            return _percentInfo
         }
     }
 

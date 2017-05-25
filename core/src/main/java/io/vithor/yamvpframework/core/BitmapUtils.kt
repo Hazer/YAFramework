@@ -29,6 +29,7 @@ object BitmapUtils {
 
     @Suppress("deprecation")
     fun loadImage(resourceId: Int, context: Context): Bitmap? {
+        // TODO: Rewrite Kotlin-way
         val defaultDisplay = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val point = Point()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -75,18 +76,9 @@ object BitmapUtils {
 
     fun fromAssets(context: Context, filePath: String): Bitmap? {
         val assetManager = context.assets
-
-        val istr: InputStream
-        var bitmap: Bitmap? = null
-        try {
-            istr = assetManager.open(filePath)
-            bitmap = BitmapFactory.decodeStream(istr)
-        } catch (e: IOException) {
-            // handle exception
-            e.debugLog { "io in assets loading" }
+        return assetManager.open(filePath).use {
+            BitmapFactory.decodeStream(it)
         }
-
-        return bitmap
     }
 
     // Scale and keep aspect ratio
@@ -105,18 +97,18 @@ object BitmapUtils {
         val width = b.width
         val height = b.height
 
-        if (width > height) {
-            // landscape
-            return scaleToFitHeight(b, maxSize)
-        } else if (height > width) {
-            // portrait
-            return scaleToFitWidth(b, maxSize)
+        return when {
+            width > height -> // landscape
+                scaleToFitHeight(b, maxSize)
+            height > width -> // portrait
+                scaleToFitWidth(b, maxSize)
+            else -> b
         }
-        return b
     }
 
     @Throws(FileNotFoundException::class)
     fun decodeAndResizeUri(context: Context, imageUri: Uri, imageMaxSize: Int): Bitmap? {
+        // TODO: Rewrite Kotlin-way
         var b: Bitmap? = null
 
         //Decode image size
@@ -147,6 +139,7 @@ object BitmapUtils {
 
     @Throws(FileNotFoundException::class)
     fun decodeAndResize(context: Context, imageFile: File, newFile: File, imageMaxSize: Int): File? {
+        // TODO: Rewrite Kotlin-way
         val b: Bitmap?
 
         //Decode image size
@@ -220,54 +213,44 @@ object BitmapUtils {
      * Returns Width or Height of the picture, depending on which size is smaller. Doesn't actually
      * decode the picture, so it is pretty efficient to run.
      */
-    fun getSmallerExtentFromBytes(bytes: ByteArray): Int {
-        val options = BitmapFactory.Options()
-
+    fun getSmallerExtentFromBytes(bytes: ByteArray): Int = BitmapFactory.Options().let {
         // don't actually decode the picture, just return its bounds
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+        it.inJustDecodeBounds = true
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size, it)
 
         // test what the best sample size is
-        return Math.min(options.outWidth, options.outHeight)
+        Math.min(it.outWidth, it.outHeight)
     }
 
     /**
      * Returns Width or Height of the picture, depending on which size is smaller. Doesn't actually
      * decode the picture, so it is pretty efficient to run.
      */
-    fun getLargerExtent(inputStream: InputStream): Int {
-        val options = BitmapFactory.Options()
-
+    fun getLargerExtent(inputStream: InputStream): Int = BitmapFactory.Options().let {
         // don't actually decode the picture, just return its bounds
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeStream(inputStream, null, options)
+        it.inJustDecodeBounds = true
+        BitmapFactory.decodeStream(inputStream, null, it)
 
         // test what the best sample size is
-        return Math.max(options.outWidth, options.outHeight)
+        Math.max(it.outWidth, it.outHeight)
     }
 
     fun bitmapToBase64(bitmap: Bitmap, recycle: Boolean): String {
-        var bao: ByteArrayOutputStream? = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bao)
-        if (recycle) {
-            recycleBitmap(bitmap)
-            System.gc()
-        }
-        val ba = bao!!.toByteArray()
-        try {
-            bao.close()
-        } catch (e: IOException) {
-            // Ignore
-            e.debugLog { "io in base64" }
-        } finally {
-            bao = null
+        val ba = ByteArrayOutputStream().use { bao ->
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bao)
+            if (recycle) {
+                recycleBitmap(bitmap)
+                System.gc()
+            }
+
+            bao.toByteArray()
         }
 
         return "data:image/jpeg;base64," + Base64.encodeToString(ba, Base64.NO_WRAP)
     }
 
-
     fun inputStreamToBase64(inputStream: InputStream): String {
+        // TODO: Rewrite Kotlin-way
         val base64InputStream = Base64InputStream(inputStream, Base64.NO_WRAP)
 
         //Now that we have the InputStream, we can read it and put it into the String
@@ -290,7 +273,7 @@ object BitmapUtils {
     }
 
     private fun recycleBitmap(bitmap: Bitmap?) {
-        if (bitmap != null && !bitmap.isRecycled) {
+        if (bitmap?.isRecycled == false) {
             bitmap.recycle()
         }
     }

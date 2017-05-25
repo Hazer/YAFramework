@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER", "unused")
+
 package io.vithor.yamvpframework.ui
 
 import android.content.ContentResolver
@@ -14,9 +16,9 @@ import android.support.v4.content.IntentCompat
 object IntentHelper {
 
     fun getCameraIntent(values: ContentValues, imageUri: Uri, contentResolver: ContentResolver): Intent {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        return cameraIntent
+        return Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        }
     }
 
     val galleryIntent: Intent
@@ -33,8 +35,8 @@ object IntentHelper {
     }
 
     fun newClearTask(context: Context, cls: Class<*>): Intent {
-        val intent = Intent(context, cls)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
-        return intent
+        return Intent(context, cls).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
+        }
     }
 }

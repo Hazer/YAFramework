@@ -56,11 +56,4 @@ abstract class AbstractRepository<API>(val clazz: Class<API>) {
             }
         }
     }
-
-//    class SessionAuthInterceptor : AuthRequestInterceptor() {
-//        override var provider: AuthProvider? = null
-//            get() {
-//                return DelivererSession.active
-//            }
-//    }
 }

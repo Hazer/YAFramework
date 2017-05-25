@@ -6,5 +6,6 @@ include ':core',
         ':validation',
         ':migration',
         ':sqlite',
-        ':rest'
+        ':rest',
+        ':all'
 

@@ -24,9 +24,11 @@ artifacts {
     archives sourcesJar
     archives javadocJar
 }
-//
-//afterEvaluate {
-//    publishing.repositories {
+
+afterEvaluate {
+    publishing.repositories {
+        mavenLocal()
+
 //        maven {
 //            url "s3://guizion-artfactory/"
 //            credentials(AwsCredentials) {
@@ -34,35 +36,35 @@ artifacts {
 //                secretKey "${guizion_aws_accesskey}"
 //            }
 //        }
-//    }
-//
-//    publishing.publications {
-//        "${POM_ARTIFACT_ID}"(MavenPublication) {
-//            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-//            pom.withXml {
-//                def dependenciesNode = asNode().appendNode('dependencies')
-//
-//                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-//                configurations.compile.allDependencies.each {
-//                    if (it.group != null && it.name != null) {
-//                        def depGroup = it.group
-//                        def depVersion = it.version
-//                        if (depGroup.equalsIgnoreCase(rootProject.name)) {
-//                            depGroup = GROUP
-//                            depVersion = VERSION_NAME
-//                        }
-//                        def dependencyNode = dependenciesNode.appendNode('dependency')
-//                        dependencyNode.appendNode('groupId', depGroup)
-//                        dependencyNode.appendNode('artifactId', it.name)
-//                        dependencyNode.appendNode('version', depVersion)
-//                    }
-//                }
-//            }
-//
-//            artifactId = POM_ARTIFACT_ID
-//            groupId = GROUP
-//            version = VERSION_NAME
-//            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
-//        }
-//    }
-//}
+    }
+
+    publishing.publications {
+        "${POM_ARTIFACT_ID}"(MavenPublication) {
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    if (it.group != null && it.name != null) {
+                        def depGroup = it.group
+                        def depVersion = it.version
+                        if (depGroup.equalsIgnoreCase(rootProject.name)) {
+                            depGroup = GROUP
+                            depVersion = VERSION_NAME
+                        }
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', depGroup)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', depVersion)
+                    }
+                }
+            }
+
+            artifactId = POM_ARTIFACT_ID
+            groupId = GROUP
+            version = VERSION_NAME
+            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
+        }
+    }
+}

@@ -1,7 +1,7 @@
 package io.vithor.yamvpframework.validation
 
 import android.widget.EditText
-import org.jetbrains.anko.async
+import org.jetbrains.anko.doAsync
 
 /**
  * Created by Vithorio Polten on 2/16/16.
@@ -65,7 +65,7 @@ class ValidationForm(val map: List<ValidableField>) {
     }
 
     fun validateAsync(success: () -> Unit, failed: (invalidRules: List<FailedRule>) -> Unit) {
-        async() { validate(success, failed) }
+        doAsync { validate(success, failed) }
     }
 
 }

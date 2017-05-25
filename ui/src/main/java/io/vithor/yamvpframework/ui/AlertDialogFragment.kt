@@ -16,7 +16,7 @@ class AlertDialogFragment: DialogFragment() {
         return AlertDialog.Builder(activity)
                 .setTitle(R.string.cannot_create_account)
                 .setMessage(arguments?.getCharSequence("message") ?: "")
-                .setPositiveButton("Ok", { dialog, which ->
+                .setPositiveButton("Ok", { dialog, _ ->
                     dialog.dismiss()
                 }).create()
     }

@@ -1,13 +1,9 @@
 dependencies {
-    compile project(':core')
-    compile project(':ui')
-    compile project(':gson')
-    compile project(':mvp')
-    compile project(':permissions')
-    compile project(':validation')
-    compile project(':migration')
-    compile project(':sqlite')
-    compile project(':rest')
+    api project(':mvp')
+    api project(':validation')
+    api project(':migration')
+    api project(':sqlite')
+    api project(':rest')
 }
 
 apply from: new File("${rootProject.projectDir}/publish.gradle")

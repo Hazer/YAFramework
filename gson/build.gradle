@@ -1,5 +1,5 @@
 dependencies {
-    compile "com.google.code.gson:gson:2.8.0"
+    api "com.google.code.gson:gson:2.8.0"
 }
 
 apply from: new File("${rootProject.projectDir}/publish.gradle")

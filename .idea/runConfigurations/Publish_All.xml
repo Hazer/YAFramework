@@ -12,7 +12,6 @@
         <list>
           <option value="clean" />
           <option value="build" />
-          <option value="compileReleaseSources" />
           <option value="assembleRelease" />
           <option value="publish" />
         </list>

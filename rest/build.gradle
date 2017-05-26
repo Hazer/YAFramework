@@ -1,14 +1,11 @@
-android.lintOptions {
-    warning 'InvalidPackage'
-}
-
 dependencies {
-    compile project(':core')
-    compile project(':gson')
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    api project(':gson')
+    api project(':core')
 
-    compile 'com.github.mrmike:ok2curl:0.3.1'
+    api 'com.squareup.retrofit2:retrofit:2.2.0'
+    api 'com.squareup.retrofit2:converter-gson:2.2.0'
+
+    api 'com.github.mrmike:ok2curl:0.3.1'
 }
 
 apply from: new File("${rootProject.projectDir}/publish.gradle")

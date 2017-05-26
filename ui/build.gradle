@@ -1,16 +1,14 @@
 dependencies {
-    compile project(':core')
-    compile project(':permissions')
+    api project(':core')
+    api project(':permissions')
 
-    compile "com.android.support:percent:${libraries.supportVersion}"
-    compile "com.android.support:support-annotations:${libraries.supportVersion}"
-    javadocDeps "com.android.support:support-annotations:${libraries.supportVersion}"
+    api "com.android.support:percent:${libraries.supportVersion}"
 
-    compile "org.jetbrains.anko:anko-sdk23:${libraries.ankoVersion}"
-    compile "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
-    compile "org.jetbrains.anko:anko-appcompat-v7:${libraries.ankoVersion}"
+    api "org.jetbrains.anko:anko-sdk23:${libraries.ankoVersion}"
+    api "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
+    api "org.jetbrains.anko:anko-appcompat-v7:${libraries.ankoVersion}"
 
-    compile 'com.github.bumptech.glide:glide:3.8.0'
+    api 'com.github.bumptech.glide:glide:3.8.0'
 }
 
 apply from: new File("${rootProject.projectDir}/publish.gradle")

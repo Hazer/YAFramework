@@ -49,7 +49,7 @@ subprojects {
     apply plugin: 'com.android.library'
     apply plugin: 'kotlin-android'
     // make sure this comes *after* you apply the Android plugin
-    apply plugin: 'com.getkeepsafe.dexcount'
+    // apply plugin: 'com.getkeepsafe.dexcount'
     apply plugin: 'org.jetbrains.dokka-android'
 
     apply plugin: 'maven-publish'
@@ -73,14 +73,19 @@ subprojects {
         sourceSets {
             main.java.srcDirs += 'src/main/kotlin'
         }
+
+        lintOptions {
+            warning 'InvalidPackage'
+            disable 'UnusedResources'
+        }
     }
 
     dependencies {
-        testCompile 'junit:junit:4.12'
-        testCompile "com.winterbe:expekt:0.5.0"
-        testCompile 'com.nhaarman:mockito-kotlin:1.4.0'
+        testImplementation 'junit:junit:4.12'
+        testImplementation "com.winterbe:expekt:0.5.0"
+        testImplementation 'com.nhaarman:mockito-kotlin:1.4.0'
 
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     }
 }
 

@@ -2,7 +2,7 @@ import groovy.xml.QName
 
 def VERSION_NAME = rootProject.ext.VERSION_NAME
 def GROUP = rootProject.ext.GROUP
-def POM_ARTIFACT_ID = project.name
+ext.POM_ARTIFACT_ID = project.name
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs

@@ -15,6 +15,8 @@ buildscript {
 
         GROUP = "io.vithor.frameworks.yaf"
         VERSION_NAME = "1.0.0-rc2"
+
+        DEPLOY_TO = System.getenv("DEPLOY_TO") ?: "LOCAL"
     }
 
     repositories {
@@ -27,6 +29,9 @@ buildscript {
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.14"
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.4'
 
+        if (DEPLOY_TO == "BINTRAY") {
+            classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        }
     }
 }
 
@@ -52,6 +57,9 @@ subprojects {
     apply plugin: 'org.jetbrains.dokka-android'
 
     apply plugin: 'maven-publish'
+    if (DEPLOY_TO == "BINTRAY") {
+        apply plugin: 'com.jfrog.bintray'
+    }
 
     android {
         compileSdkVersion compile_sdk_version
@@ -85,6 +93,14 @@ subprojects {
         testImplementation 'com.nhaarman:mockito-kotlin:1.4.0'
 
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    }
+
+    apply from: new File("${rootProject.projectDir}/publish-base.gradle")
+
+    if (DEPLOY_TO == "LOCAL") {
+        apply from: new File("${rootProject.projectDir}/publish-local.gradle")
+    } else if (DEPLOY_TO == "BINTRAY") {
+        apply from: new File("${rootProject.projectDir}/publish-bintray.gradle")
     }
 }
 

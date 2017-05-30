@@ -3,4 +3,3 @@ dependencies {
     api 'com.j256.ormlite:ormlite-android:5.0'
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")

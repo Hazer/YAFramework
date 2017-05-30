@@ -11,4 +11,3 @@ dependencies {
     }
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")

@@ -9,4 +9,3 @@ dependencies {
     api 'com.nivabit.kuery:sqlite:0.3'
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")

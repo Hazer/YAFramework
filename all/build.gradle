@@ -5,5 +5,3 @@ dependencies {
     api project(':sqlite')
     api project(':rest')
 }
-
-apply from: new File("${rootProject.projectDir}/publish.gradle")

@@ -1,0 +1,22 @@
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_API_KEY')
+
+    if (user == null || key == null) {
+        throw IllegalStateException("Bintray User and API Key must be provided when BINTRAY env is defined.")
+    }
+
+    publications = [POM_ARTIFACT_ID]
+
+    pkg {
+        repo = 'maven'
+        name = 'yaf'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/Hazer/YAFramework.git'
+        version {
+            name = VERSION_NAME
+            released = new Date()
+            vcsTag = VERSION_NAME
+        }
+    }
+}

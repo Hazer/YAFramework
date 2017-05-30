@@ -3,4 +3,3 @@ dependencies {
     api "com.android.support:support-annotations:${libraries.supportVersion}"
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")

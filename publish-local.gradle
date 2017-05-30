@@ -1,0 +1,17 @@
+afterEvaluate {
+    publishing.repositories {
+        mavenLocal()
+
+//        if (PUBLISH_TO == "GUIZION") {
+//            maven {
+//                url "s3://guizion-artfactory/"
+//                credentials(AwsCredentials) {
+//                    accessKey "${guizion_aws_accessid}"
+//                    secretKey "${guizion_aws_accesskey}"
+//                }
+//            }
+//        } else {
+//            mavenLocal()
+//        }
+    }
+}

@@ -8,4 +8,4 @@ dependencies {
     api 'com.github.mrmike:ok2curl:0.3.1'
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")
+

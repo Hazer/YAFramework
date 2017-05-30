@@ -46,18 +46,6 @@ def configureDependencies(Dependency dep, Node dependenciesNode) {
 }
 
 afterEvaluate {
-    publishing.repositories {
-        mavenLocal()
-
-//        maven {
-//            url "s3://guizion-artfactory/"
-//            credentials(AwsCredentials) {
-//                accessKey "${guizion_aws_accessid}"
-//                secretKey "${guizion_aws_accesskey}"
-//            }
-//        }
-    }
-
     publishing.publications {
         "${POM_ARTIFACT_ID}"(MavenPublication) {
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom

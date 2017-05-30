@@ -6,4 +6,3 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")

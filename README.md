@@ -1,10 +1,17 @@
-# YAFramework [![Build Status](https://www.bitrise.io/app/4088ff7976b995e8/status.svg?token=V0Xvf2jmpBy443zHTsKhYw&branch=development/candidates)](https://www.bitrise.io/app/4088ff7976b995e8)
+# YAFramework [ ![Download](https://api.bintray.com/packages/hazer/maven/yaf/images/download.svg) ](https://bintray.com/hazer/maven/yaf/_latestVersion)[![Build Status](https://www.bitrise.io/app/4088ff7976b995e8/status.svg?token=V0Xvf2jmpBy443zHTsKhYw&branch=development/candidates)](https://www.bitrise.io/app/4088ff7976b995e8)
 
 Built upon  [![Kotlin](https://img.shields.io/badge/kotlin-1.1.2--4-blue.svg)](http://kotlinlang.org)[ ![Anko](https://img.shields.io/badge/anko-0.9.1a-blue.svg) ](https://bintray.com/jetbrains/anko/anko/0.9.1a/link)
 
 Yet Another Framework for Android
 
 # Using Yaf
+This project is not yet release to jcenter, but it is already on Bintray, during this period use the project pointing to the private repository:
+```Gradle
+repositories {
+  maven { url "https://dl.bintray.com/hazer/maven" }
+}
+```
+
 Yaf has a meta-dependency which plugs in all available features into your project at once:
 
 ```Gradle

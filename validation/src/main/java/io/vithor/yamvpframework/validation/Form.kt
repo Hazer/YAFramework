@@ -1,7 +1,9 @@
 package io.vithor.yamvpframework.validation
 
 import android.widget.EditText
-import org.jetbrains.anko.doAsync
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 /**
  * Created by Vithorio Polten on 2/16/16.
@@ -26,17 +28,25 @@ fun validationForm(vararg functions: () -> ValidableField): ValidationForm {
 data class FailedRule(val rule: Rule<*>, val editText: EditText)
 
 class ValidationForm(val map: List<ValidableField>) {
+    companion object {
+        private val backgroundExecutor by lazy { BackgroundExecutor() }
+    }
+
+    internal class BackgroundExecutor {
+        var executor: ExecutorService =
+                Executors.newScheduledThreadPool(2 * Runtime.getRuntime().availableProcessors())
+
+        fun <T> submit(task: () -> T): Future<T> = executor.submit(task)
+    }
 
     fun validateAll(success: () -> Unit, failed: (invalidRules: List<FailedRule>) -> Unit) {
         var failedRules: List<FailedRule> = mutableListOf()
 
         for (field in map) {
             val editText = field.editText
-            for (rule in field.rules) {
-                if (!rule.isValid(editText)) {
-                    failedRules += FailedRule(rule = rule, editText = editText)
-                }
-            }
+            field.rules
+                    .filterNot { it.isValid(editText) }
+                    .forEach { failedRules += FailedRule(rule = it, editText = editText) }
         }
         if (failedRules.isNotEmpty()) {
             failed.invoke(failedRules)
@@ -65,9 +75,8 @@ class ValidationForm(val map: List<ValidableField>) {
     }
 
     fun validateAsync(success: () -> Unit, failed: (invalidRules: List<FailedRule>) -> Unit) {
-        doAsync { validate(success, failed) }
+        backgroundExecutor.submit { validate(success, failed) }
     }
-
 }
 
 class ValidableField {

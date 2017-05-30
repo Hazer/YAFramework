@@ -1,8 +1,5 @@
 dependencies {
     api project(':core')
-    api "org.jetbrains.anko:anko-sdk23:${libraries.ankoVersion}"
-    api "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
-    api "org.jetbrains.anko:anko-appcompat-v7:${libraries.ankoVersion}"
     api "com.android.support:support-annotations:${libraries.supportVersion}"
 }
 

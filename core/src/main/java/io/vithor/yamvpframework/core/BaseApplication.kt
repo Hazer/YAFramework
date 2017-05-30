@@ -13,23 +13,6 @@ import de.halfbit.tinybus.TinyBus
 abstract class BaseApplication : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
     val bus: TinyBus by lazy { TinyBus.from(this) }
 
-    /*
-    protected Decorator[] contextDecorators() {
-        return Decorators.getAll();
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        Decorator[] decorators = contextDecorators();
-        if (decorators != null) {
-            super.attachBaseContext(DecorContextWrapper.wrap(newBase)
-                    .with(decorators));
-        } else {
-            super.attachBaseContext(newBase);
-        }
-    }
-    */
-
     override fun onCreate() {
         super.onCreate()
         bus.register(this)

@@ -27,6 +27,7 @@ platform :android do
 
   desc "Deploy a new version to the jCenter"
   lane :deploy_jcenter do
+  	ENV["PUBLISH_VERSION"] = version_from_last_tag
     gradle(task: "assembleRelease")
     gradle(task: "bintrayUpload")
   end

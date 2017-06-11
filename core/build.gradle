@@ -1,7 +1,8 @@
 dependencies {
     api 'de.halfbit:tinybus:3.0.2'
     api 'de.halfbit:tinybus-extensions:3.0.2'
-    api 'com.android.support:multidex:1.0.2'
+    //noinspection GradleDynamicVersion
+    api 'com.android.support:multidex:1.0.+' // MultiDex version has some problems with official distribution...
 
     api "com.android.support:support-v4:${libraries.supportVersion}"
     javadocDeps "com.android.support:support-v4:${libraries.supportVersion}"

@@ -1,58 +1,11 @@
-buildscript {
-    repositories { jcenter() }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'maven-publish'
-apply plugin: 'org.jetbrains.dokka-android'
-//apply plugin: 'com.vanniktech.android.apk.size'
-
-kapt {
-    generateStubs = true
-}
-
-android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
-
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-    lintOptions {
-        warning 'InvalidPackage'
-    }
-}
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile "com.winterbe:expekt:0.4.0"
-    testCompile 'com.nhaarman:mockito-kotlin:0.5.0'
+    api project(':gson')
+    api project(':core')
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api 'com.squareup.retrofit2:retrofit:2.2.0'
+    api 'com.squareup.retrofit2:converter-gson:2.2.0'
 
-    compile project(':core')
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.google.code.gson:gson:2.6.2'
-
-    compile 'com.github.mrmike:ok2curl:0.2.3'
+    api 'com.github.mrmike:ok2curl:0.3.1'
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")
+

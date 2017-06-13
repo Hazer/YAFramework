@@ -9,6 +9,7 @@ import io.vithor.yamvpframework.mvp.RepositoryCallback
 import io.vithor.yamvpframework.mvp.ResponseContainer
 import io.vithor.yamvpframework.mvp.presenter.sketch.Sketch
 import java.lang.ref.WeakReference
+import java.util.concurrent.Executors
 import kotlin.reflect.KClass
 
 /**
@@ -26,6 +27,8 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
             return PresenterBucket.getRetainedInstance(tag) as? P
         }
     }
+
+    protected val actionQueue by lazy { Executors.newSingleThreadScheduledExecutor() }
 
     private var viewWeak: WeakReference<SK>? = null
 
@@ -102,6 +105,24 @@ abstract class BasePresenter<SK : Sketch> : Presenter {
             presenter.onRestFailure(error, action)
         }
     }
-}
 
+    abstract class ViewRunnable(view: Any) : java.lang.Runnable {
+        protected val weakView: WeakReference<Any>
+
+        init {
+            this.weakView = WeakReference(view)
+        }
+
+        override fun run() {
+            if (weakView.get() == null) throw ViewDetachedException()
+        }
+    }
+
+    class ViewRunnableWrapper(view: Any, val runnable: Runnable) : ViewRunnable(view) {
+        override fun run() {
+            super.run()
+            runnable.run()
+        }
+    }
+}
 

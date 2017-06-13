@@ -53,3 +53,4 @@ proguard/
 
 # Log Files
 *.log
+.idea/dbnavigator.xml

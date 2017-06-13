@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, vararg var providedInterceptors: Interceptor) {
+class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, vararg var providedInterceptors: Interceptor?) {
 
     var apiAuthorizations: MutableMap<String, Interceptor>? = null
         get() = apiAuthorizations
@@ -51,20 +51,20 @@ class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, varar
 
 //        okBuilder.addInterceptor(GzipInterceptor()) // TODO: Find another way to gzip, not working
 
-        for (interceptor in providedInterceptors) {
-            okBuilder.addInterceptor(interceptor)
-        }
+        providedInterceptors
+                .filterNotNull()
+                .forEach { okBuilder.addInterceptor(it) }
 
-//        if (BuildConfig.DEBUG) {
+
             okBuilder.addInterceptor(CurlInterceptor(Loggable { message ->
-                Log.d("Ok2Curl", message);
+                Log.d("Ok2Curl", message)
             }))
 
-        okBuilder.addNetworkInterceptor(CurlInterceptor())
-
+        okBuilder.addNetworkInterceptor(CurlInterceptor(Loggable { message ->
+            Log.d("Network-Ok2Curl", message)
+        }))
 
 //        okBuilder.addNetworkInterceptor(StethoInterceptor())
-//        }
 
         okClient = okBuilder.build()
 
@@ -77,7 +77,6 @@ class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, varar
 
     fun <S> createService(serviceClass: Class<S>): S {
         return adapterBuilder.build().create(serviceClass)
-
     }
 }
 

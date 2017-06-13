@@ -1,53 +1,13 @@
-buildscript {
-    repositories { jcenter() }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
-apply plugin: 'org.jetbrains.dokka-android'
-//apply plugin: 'com.vanniktech.android.apk.size'
-
-kapt {
-    generateStubs = true
-}
-
-android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
-
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-}
-
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile "com.winterbe:expekt:0.4.0"
-    testCompile 'com.nhaarman:mockito-kotlin:0.5.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api "com.android.support:appcompat-v7:${libraries.supportVersion}"
+    javadocDeps "com.android.support:appcompat-v7:${libraries.supportVersion}"
+    api "com.android.support:support-v13:${libraries.supportVersion}"
+    javadocDeps "com.android.support:support-v13:${libraries.supportVersion}"
+    api "com.android.support:support-v4:${libraries.supportVersion}"
+    javadocDeps "com.android.support:support-v4:${libraries.supportVersion}"
 
-    compile('com.github.afollestad:assent:0.2.4') {
-        transitive = true
+    api('com.afollestad:assent:0.2.5') {
+        transitive = false
     }
-    compile "com.android.support:support-v4:${libraries.supportVersion}"
-
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")

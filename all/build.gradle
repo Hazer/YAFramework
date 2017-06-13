@@ -1,0 +1,7 @@
+dependencies {
+    api project(':mvp')
+    api project(':validation')
+    api project(':migration')
+    api project(':sqlite')
+    api project(':rest')
+}

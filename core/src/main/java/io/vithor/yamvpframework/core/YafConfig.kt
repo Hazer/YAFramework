@@ -10,7 +10,7 @@ object YafConfig {
     var DEBUG: Boolean by YafDelegates.mustInitialize<Boolean>("YafConfig::init not called in your Application.\nPlease configure it before using this framework.")
         private set
 
-    fun init(app: Application, isDebuggable: Boolean) {
+    @JvmStatic fun init(app: Application, isDebuggable: Boolean) {
         this.DEBUG = isDebuggable
     }
 }

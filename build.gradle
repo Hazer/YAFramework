@@ -1,28 +1,50 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-ext {
-    libraries = [
-            supportVersion     : "23.4.0",
-            ankoVersion        : "0.8.3",
-    ]
-    GROUP = "com.guizion.frameworks.yaf"
-    VERSION_NAME = "0.0.9"
-}
-
 buildscript {
-    ext.kotlin_version = '1.0.2-1'
+    ext {
+        kotlin_version = '1.1.2-5'
+        build_tools_version = '26.0.0'
+        compile_sdk_version = 26
+        min_sdk_version = 15
+        target_sdk_version = 25
+
+        libraries = [
+                supportVersion: "25.4.0",
+                ankoVersion   : "0.9.1a",
+        ]
+
+        GROUP = "io.vithor.frameworks.yaf"
+
+        DEPLOY_TO = System.getenv("DEPLOY_TO") ?: "LOCAL"
+    }
+
     repositories {
+        google()
         jcenter()
-        maven { url "https://jitpack.io" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha4'
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.8"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.14"
+//        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.1-SNAPSHOT'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+
+        if (DEPLOY_TO == "BINTRAY") {
+            classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        }
     }
 }
+plugins {
+    id 'com.gladed.androidgitversion' version '0.3.4'
+}
+androidGitVersion {
+    format = '%tag%'
+}
+def getVersionName() {
+    return androidGitVersion.name()
+}
+
+ext.VERSION_NAME = getVersionName()
 
 allprojects {
 
@@ -31,8 +53,65 @@ allprojects {
     }
 
     repositories {
+        google()
         jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
+    }
+}
+
+subprojects {
+    apply plugin: 'com.android.library'
+    apply plugin: 'kotlin-android'
+    apply plugin: 'org.jetbrains.dokka-android'
+    // make sure this comes *after* you apply the Android plugin
+//    apply plugin: 'com.getkeepsafe.dexcount'
+
+    apply plugin: 'maven-publish'
+    if (DEPLOY_TO == "BINTRAY") {
+        apply plugin: 'com.jfrog.bintray'
+    }
+
+    android {
+        compileSdkVersion compile_sdk_version
+        buildToolsVersion "$build_tools_version"
+
+        defaultConfig {
+            minSdkVersion min_sdk_version
+            targetSdkVersion target_sdk_version
+            versionCode 1
+            versionName "1.0"
+        }
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
+        sourceSets {
+            main.java.srcDirs += 'src/main/kotlin'
+        }
+
+        lintOptions {
+            warning 'InvalidPackage'
+            disable 'UnusedResources'
+        }
+    }
+
+    dependencies {
+        testImplementation 'junit:junit:4.12'
+        testImplementation "com.winterbe:expekt:0.5.0"
+        testImplementation 'com.nhaarman:mockito-kotlin:1.4.0'
+
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    }
+
+    apply from: new File("${rootProject.projectDir}/publish-base.gradle")
+
+    if (DEPLOY_TO == "LOCAL") {
+        apply from: new File("${rootProject.projectDir}/publish-local.gradle")
+    } else if (DEPLOY_TO == "BINTRAY") {
+        apply from: new File("${rootProject.projectDir}/publish-bintray.gradle")
     }
 }
 

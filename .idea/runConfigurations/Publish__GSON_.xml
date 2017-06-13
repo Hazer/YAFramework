@@ -10,11 +10,11 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="clean" />
-          <option value="build" />
-          <option value="compileReleaseSources" />
-          <option value="assembleRelease" />
-          <option value="publish" />
+          <option value=":gson:clean" />
+          <option value=":gson:build" />
+          <option value=":gson:compileReleaseSources" />
+          <option value=":gson:assembleRelease" />
+          <option value=":gson:publish" />
         </list>
       </option>
       <option name="vmOptions" value="" />

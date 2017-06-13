@@ -1,0 +1,75 @@
+import groovy.xml.QName
+
+def VERSION_NAME = rootProject.ext.VERSION_NAME
+def GROUP = rootProject.ext.GROUP
+ext.POM_ARTIFACT_ID = project.name
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.javadocDeps
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+def configureDependencies(Dependency dep, Node dependenciesNode) {
+    if (dep.group != null && dep.name != null) {
+        def depGroup = dep.group
+        def depVersion = dep.version
+
+        if (depGroup.equalsIgnoreCase(rootProject.name)) {
+            depGroup = GROUP
+            depVersion = VERSION_NAME
+        }
+
+        println "Appending to POM -> $depGroup:${dep.name}:$depVersion"
+
+        def dependencyNode = dependenciesNode.appendNode('dependency')
+        dependencyNode.appendNode('groupId', depGroup)
+        dependencyNode.appendNode('artifactId', dep.name)
+        dependencyNode.appendNode('version', depVersion)
+    }
+}
+
+afterEvaluate {
+    publishing.publications {
+        "${POM_ARTIFACT_ID}"(MavenPublication) {
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                logging.captureStandardOutput LogLevel.INFO
+                println "Configuring POM file"
+                Node dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                Set<Dependency> dependencySet = new LinkedHashSet<>()
+                dependencySet += configurations.api.allDependencies
+                dependencySet += configurations.implementation.allDependencies
+                dependencySet += configurations.compile.allDependencies
+
+                dependencySet.each {
+                    configureDependencies(it, dependenciesNode)
+                }
+                println "Done configuring POM file"
+            }
+
+            artifactId = POM_ARTIFACT_ID
+            groupId = GROUP
+            version = VERSION_NAME
+            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
+        }
+    }
+}

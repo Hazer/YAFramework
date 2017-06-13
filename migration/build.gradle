@@ -1,50 +1,5 @@
-buildscript {
-    repositories { jcenter() }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
-apply plugin: 'org.jetbrains.dokka-android'
-
-kapt {
-    generateStubs = true
-}
-
-android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
-
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-}
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile "com.winterbe:expekt:0.4.0"
-    testCompile 'com.nhaarman:mockito-kotlin:0.5.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    compile "com.android.support:support-v4:${libraries.supportVersion}"
-    compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'com.github.Hazer:Raven-Android:0.1.10'
-
+    api "com.android.support:support-v4:${libraries.supportVersion}"
+    api 'com.j256.ormlite:ormlite-android:5.0'
 }
 
-apply from: new File("${rootProject.projectDir}/publish.gradle")

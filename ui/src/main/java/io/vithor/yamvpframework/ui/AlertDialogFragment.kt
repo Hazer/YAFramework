@@ -2,25 +2,27 @@ package io.vithor.yamvpframework.ui
 
 import android.app.Dialog
 import android.os.Bundle
+import android.support.annotation.Keep
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
 import io.vithor.yamvpframework.core.extensions.unwrap
 import org.jetbrains.anko.support.v4.withArguments
 
+@Keep
 class AlertDialogFragment: DialogFragment() {
 
-    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(activity)
                 .setTitle(R.string.cannot_create_account)
                 .setMessage(arguments?.getCharSequence("message") ?: "")
-                .setPositiveButton("Ok", { dialog, which ->
+                .setPositiveButton("Ok", { dialog, _ ->
                     dialog.dismiss()
                 }).create()
     }
 
     companion object {
-        private val FRAG_TAG = "alert"
+        private const val FRAG_TAG = "alert"
 
         fun showAlert(fragMan: FragmentManager, message: String) {
             dismissAlert(fragMan)

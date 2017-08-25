@@ -10,7 +10,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
-class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, vararg var providedInterceptors: Interceptor?) {
+class ApiClient(var baseUrl: String,
+                val interceptor: Interceptor? = null,
+                vararg var providedInterceptors: Interceptor?,
+                gsonConfigure: ((builder: GsonBuilder) -> Unit)? = null) {
 
     var apiAuthorizations: MutableMap<String, Interceptor>? = null
         get() = apiAuthorizations
@@ -23,15 +26,17 @@ class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, varar
     init {
         if (!baseUrl.endsWith("/"))
             baseUrl += "/"
-        apiAuthorizations = LinkedHashMap<String, Interceptor>()
-        createDefaultAdapter(baseUrl)
+        apiAuthorizations = LinkedHashMap()
+        createDefaultAdapter(baseUrl, gsonConfigure)
     }
 
-    fun createDefaultAdapter(baseUrl: String) {
-        val gson = GsonBuilder()
+    fun createDefaultAdapter(baseUrl: String, gsonConfigure: ((builder: GsonBuilder) -> Unit)?) {
+
+        val gsonBuilder = GsonBuilder()
                 // .registerTypeAdapter(Date.class, new GsonDateMultiDeserializer())
                 .setDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
-                .create()
+        gsonConfigure?.invoke(gsonBuilder)
+        val gson = gsonBuilder.create()
 
         val okBuilder = OkHttpClient.Builder()
                 .addInterceptor {
@@ -57,16 +62,11 @@ class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, varar
             }
         }
 
-//        if (BuildConfig.DEBUG) {
-            okBuilder.addInterceptor(CurlInterceptor(Loggable { message ->
-                Log.d("Ok2Curl", message);
-            }))
+        okBuilder.addInterceptor(CurlInterceptor(Loggable { message ->
+            Log.d("Ok2Curl", message);
+         }))
 
         okBuilder.addNetworkInterceptor(CurlInterceptor())
-
-
-//        okBuilder.addNetworkInterceptor(StethoInterceptor())
-//        }
 
         okClient = okBuilder.build()
 
@@ -74,7 +74,6 @@ class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, varar
                 .baseUrl(baseUrl)
                 .client(okClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-//                .addConverterFactory(GsonCustomConverterFactory.create(gson))
     }
 
     fun <S> createService(serviceClass: Class<S>): S {
@@ -82,4 +81,3 @@ class ApiClient(var baseUrl: String, val interceptor: Interceptor? = null, varar
 
     }
 }
-

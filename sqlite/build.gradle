@@ -1,0 +1,11 @@
+dependencies {
+    api "org.jetbrains.anko:anko-sdk23:${libraries.ankoVersion}"
+    api "org.jetbrains.anko:anko-support-v4:${libraries.ankoVersion}"
+    api "org.jetbrains.anko:anko-appcompat-v7:${libraries.ankoVersion}"
+
+    // Core library
+    api 'com.nivabit.kuery:core:0.3'
+    // SQLite dialect
+    api 'com.nivabit.kuery:sqlite:0.3'
+}
+

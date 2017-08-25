@@ -1,8 +1,9 @@
 package io.vithor.yamvpframework.rest
 
 /**
- * Created by Guizion on 13/06/16.
+ * Created by Lucas M Paim on 13/06/16.
  */
+import android.support.annotation.Keep
 import io.vithor.yamvpframework.rest.api.ApiClient
 import okhttp3.Interceptor
 import okhttp3.ResponseBody
@@ -10,12 +11,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@Keep
 abstract class AbstractRepository<API>(val clazz: Class<API>) {
-    //val baseURL = BuildConfig.API_URL
+    abstract val authInterceptor: Interceptor?
 
-    //protected val authInterceptor by lazy { SessionAuthInterceptor() }
+    abstract val baseURL: String
 
-    protected val versionPathInterceptor by lazy { Interceptor { chain ->
+    open protected val versionPathInterceptor: Interceptor? by lazy { Interceptor { chain ->
         val original = chain.request()
         val request = original.newBuilder().method(original.method(), original.body())
 
@@ -26,10 +28,6 @@ abstract class AbstractRepository<API>(val clazz: Class<API>) {
         chain.proceed(request.build())
     } }
 
-
-    abstract fun getBaseURL(): String
-    abstract fun getAuthInterceptor(): Interceptor?
-
     protected val client by lazy { createClient() }
 
     protected val service: API by lazy {
@@ -37,10 +35,11 @@ abstract class AbstractRepository<API>(val clazz: Class<API>) {
     }
 
     private fun createClient(): ApiClient {
-        val client = ApiClient(getBaseURL(), getAuthInterceptor(), versionPathInterceptor)
+        val client = ApiClient(baseURL, authInterceptor, versionPathInterceptor)
         return client
     }
 
+    @Keep
     class DefaultCallback<T>(val onSuccess: (T) -> Unit, val onError: (Error, ResponseBody?) -> Unit) : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
             onError(Error.Factory.from(call.request(), t), null)
@@ -57,11 +56,4 @@ abstract class AbstractRepository<API>(val clazz: Class<API>) {
             }
         }
     }
-
-//    class SessionAuthInterceptor : AuthRequestInterceptor() {
-//        override var provider: AuthProvider? = null
-//            get() {
-//                return DelivererSession.active
-//            }
-//    }
 }

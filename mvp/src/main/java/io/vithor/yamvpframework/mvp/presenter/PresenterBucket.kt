@@ -29,23 +29,21 @@ internal object PresenterBucket {
     }
 
     object Singletons {
-        val bucket = SparseArray<BasePresenter<*>>(2)
-
         /**
          * Add Presenter to Bucket. Now it will not be destroyed on orientation change.
          * DON'T FORGET TO RELEASE IT LATER!!!
          * @param presenter Presenter to persist in memory.
          */
         fun <SK : Sketch> add(presenter: BasePresenter<SK>) {
-            bucket.put(presenter.javaClass.kotlin.hashCode(), presenter)
+            PresenterBucket.add(presenter.javaClass.kotlin.toString(), presenter)
         }
 
         fun getRetainedInstance(presenterClass: KClass<out BasePresenter<out Sketch>>): BasePresenter<*>? {
-            return bucket.get(presenterClass.java.kotlin.hashCode())
+            return PresenterBucket.getRetainedInstance(presenterClass.toString())
         }
 
         fun <T: BasePresenter<*>> release(presenterClass: KClass<T>) {
-            bucket.remove(presenterClass.java.kotlin.hashCode())
+            PresenterBucket.release(presenterClass.toString())
         }
     }
 }

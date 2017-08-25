@@ -10,11 +10,11 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="clean" />
-          <option value="build" />
-          <option value="compileReleaseSources" />
-          <option value="assembleRelease" />
-          <option value="publish" />
+          <option value=":ui:clean" />
+          <option value=":ui:build" />
+          <option value=":ui:compileReleaseSources" />
+          <option value=":ui:assembleRelease" />
+          <option value=":ui:publish" />
         </list>
       </option>
       <option name="vmOptions" value="" />

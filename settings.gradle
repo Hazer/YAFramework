@@ -5,5 +5,7 @@ include ':core',
         ':permissions',
         ':validation',
         ':migration',
-        ':rest'
+        ':sqlite',
+        ':rest',
+        ':all'
 

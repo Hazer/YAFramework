@@ -6,9 +6,17 @@ import java.io.IOException
 
 /**
  * Created by Hazer on 3/30/16.
+ *
+ * class SessionAuthInterceptor : AuthRequestInterceptor() {
+ *    override var provider: AuthProvider? = null
+ *        get() {
+ *            return DelivererSession.active
+ *        }
+ * }
  */
+
 open class AuthRequestInterceptor() : Interceptor {
-    open var provider: AuthProvider? = null
+    open val provider: AuthProvider? = null
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

@@ -18,15 +18,16 @@ class SingleClickListener(val click: (v: View) -> Unit) : View.OnClickListener {
 
     private var lastClick: Long = 0
 
+    private val lastClickTimeout: Long
+        get() {
+            return System.currentTimeMillis() - lastClick
+        }
+
     override fun onClick(v: View) {
-        if (getLastClickTimeout() > DOUBLE_CLICK_TIMEOUT) {
+        if (lastClickTimeout > DOUBLE_CLICK_TIMEOUT) {
             lastClick = System.currentTimeMillis()
             click(v)
         }
-    }
-
-    private fun getLastClickTimeout(): Long {
-        return System.currentTimeMillis() - lastClick
     }
 }
 

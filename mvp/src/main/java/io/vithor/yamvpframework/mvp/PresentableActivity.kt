@@ -15,7 +15,12 @@ abstract class PresentableActivity<P : BasePresenter<SK>, SK : Sketch> : BaseAct
     var presenter: P? = null
         private set
 
-    private var presenterClass: Class<P>? = null
+    private val presenterClass: Class<P> by lazy {
+        val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
+        val name = type.toString().substring(6)
+        @Suppress("UNCHECKED_CAST")
+        return@lazy Class.forName(name) as? Class<P> ?: throw IllegalStateException("Class ${name} does not extends from BasePresenter or the Sketch implemented its not the same from BaseActivity.")
+    }
 
     /**
      * Instantiate a presenter instance
@@ -23,15 +28,11 @@ abstract class PresentableActivity<P : BasePresenter<SK>, SK : Sketch> : BaseAct
      * @return The [BasePresenter] for this view
      */
     override final fun createPresenter(): P {
-        @Suppress("UNCHECKED_CAST")
-        if (presenterClass == null) {
-            val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
-            val name = type.toString().substring(6)
-            presenterClass = Class.forName(name) as? Class<P> ?: throw IllegalStateException("Class ${name} does not extends from BasePresenter or the Sketch implemented its not the same from BaseActivity.")
-        }
-        var inst = BasePresenter.getActiveInstance(presenterClass?.kotlin)
-        inst = inst ?: presenterClass?.newInstance()
-        return inst ?: throw IllegalStateException("Class ${presenterClass?.simpleName} must have a public no-args constructor.")
+        if (presenter != null) return presenter!!
+
+        var inst = BasePresenter.getActiveInstance(presenterClass.kotlin)
+        inst = inst ?: presenterClass.getConstructor(String::class.java)?.newInstance(presenterClass.kotlin.toString())
+        return inst ?: throw IllegalStateException("Class ${presenterClass.simpleName} must have a public no-args constructor.")
     }
 
     override fun activePresenter(): P? {
@@ -57,7 +58,7 @@ abstract class PresentableActivity<P : BasePresenter<SK>, SK : Sketch> : BaseAct
         onViewSetup(savedInstanceState)
 
         @Suppress("UNCHECKED_CAST")
-        val sketchView = this as? SK ?: throw IllegalStateException("${javaClass.simpleName} must implement ${ (presenterClass?.genericSuperclass as? ParameterizedType)?.actualTypeArguments!![0]}")
+        val sketchView = this as? SK ?: throw IllegalStateException("${javaClass.simpleName} must implement ${ (presenterClass.genericSuperclass as? ParameterizedType)?.actualTypeArguments!![0]}")
         this.presenter!!.attachView(sketchView)
     }
 

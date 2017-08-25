@@ -7,5 +7,4 @@ package io.vithor.yamvpframework.mvp.presenter
  * Presenter stop processing and ignores the ViewDetachedException.
 
  */
-//TODO: REMOVER ESTE CARA
-class ViewDetachedException : Exception() {}
+class ViewDetachedException : RuntimeException() {}
